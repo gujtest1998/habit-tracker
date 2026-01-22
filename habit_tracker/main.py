@@ -1,9 +1,14 @@
-from tracker.almacenamiento import escribir
-from tracker.estadisticas import leer
+from tracker import registrar, nuevo
+from tracker import mostrar_menu, seleccionar
 
 def main():
-    habito = input("Hábito: ")
-    tiempo = float(input("Tiempo (horas): "))
     
+    mostrar_menu()
+    
+
+
+
+
+
 if __name__ == "__main__":
     main()
