@@ -2,21 +2,21 @@ import csv
 from config import BASE_DIR
 from pathlib import Path
 
-def nuevo(nombre, categoria):
+def habito(nombre, tiempo):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
     ruta.parent.mkdir(exist_ok=True)
 
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
 
     with open(ruta, mode="a", newline="", encoding="utf-8") as archivo:
-        campos = ["temporizador", "categoria"]
+        campos = ["temporizador", "tiempo"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
-        writer.writerow({"temporizador": nombre, "categoria": categoria})
+        writer.writerow({"temporizador": nombre, "tiempo": tiempo})
 
-def registrar(habito, tiempo):
+def registrar(registro, categoria):
 
     ruta = BASE_DIR / "datos" / "registro.csv"
     ruta.parent.mkdir(exist_ok=True)
@@ -24,12 +24,12 @@ def registrar(habito, tiempo):
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
 
     with open(ruta, mode="a", newline="",encoding="utf-8") as archivo:
-        campos = ["habito","tiempo"]
+        campos = ["registro","categoria"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
-        writer.writerow({"habito": habito, "tiempo": tiempo})
+        writer.writerow({"registro": registro, "categoria": categoria})
 
     
 
