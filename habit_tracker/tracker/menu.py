@@ -1,12 +1,17 @@
-from tracker import habito, registrar, comprobar_registro, leer_csv
+from .cargar import mostrar_registros
+from .opciones import opcion_registro, opcion_borrar, opcion_borrar_todo
+from .guardar import habito
+
 import tkinter as tk
 def mostrar_menu():
+    print("hola")
     while True:
         print("\n========= MENÚ DE OPCIONES =========")
         print("1. Registrar un temporizador nuevo")
         print("2. Seleccionar un temporizador")
-        print("3. Ver estadísticas")
-        print("4. Salir")
+        print("3. Borrar un registro")
+        print("4. Borrar todos los registros")
+        print("5. Salir")
         print("====================================")
 
         opcion = input("\nSelecciona una opción: ")
@@ -16,15 +21,9 @@ def mostrar_menu():
         
 def seleccionar(opcion):
     if opcion == "1":
+        #print("hola")
+        opcion_registro()
 
-        nombre = input("Nombre a registrar: ")
-        comprobado = comprobar_registro(nombre)
-        if comprobado > 0:
-            print("\nEsté hábito ya está registrado. Por favor, introduce uno nuevo.")
-        else:
-            categoria = input("Categoria: ")
-            registrar(nombre, categoria)
-            print("\nTemporizador "+nombre+" bajo la categoria "+categoria+" registrado con éxito.")
         return True
     elif opcion == "2":
         nombre = input("Nombre a temporizar: ")
@@ -33,13 +32,17 @@ def seleccionar(opcion):
         print("\nAnotado el tiempo para el temporizador "+nombre)
         return True
     elif opcion == "3":
-        print("Estado")
+        mostrar_registros()
+        borrar = input("\nIntroduce el nombre del elemento a borrar: ")
+        opcion_borrar(borrar)
         return True
     elif opcion == "4":
-        return False
+        opcion_borrar_todo()
     elif opcion == "5":
+        return False
+    elif opcion == "6":
         print("Prueba")
-        leer_csv()
+        mostrar_registros()
 
     else:
         print("\nOpción no válida. Introduce una de las opciones.\n")

@@ -1,18 +1,16 @@
 import csv
 from config import BASE_DIR
 
-
-def mostrar_registros():
-    
+def comprobar_registro(habito):
     ruta = BASE_DIR / "datos" / "registro.csv"
 
     if not ruta.exists():
-        return []
-    contador = 0
+        return 0
+
     with open(ruta, newline="", encoding="utf-8") as archivo:
         lector = csv.reader(archivo)
-       
+        contador = 0
         for fila in lector:
-            contador +=1
-            print(f"{contador} - {fila[0]}")
-    
+            if fila[0] == habito:
+                contador += 1
+        return int(contador)

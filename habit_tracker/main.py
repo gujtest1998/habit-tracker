@@ -1,5 +1,4 @@
-from tracker import registrar, habito
-from tracker import mostrar_menu, seleccionar
+from tracker import mostrar_menu
 
 def main():
     
