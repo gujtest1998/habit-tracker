@@ -14,3 +14,13 @@ def comprobar_registro(habito):
             if fila[0] == habito:
                 contador += 1
         return int(contador)
+    
+def comprobar_categoria(categoria):
+    ruta = BASE_DIR / "datos" / "categorias.csv"
+
+    if not ruta.exists():
+        return 0
+    
+    with open(ruta, newline="", encoding="utf-8") as archivo:
+        lector = csv.DictReader(archivo)
+        return any(fila["categoria"] == categoria for fila in lector)

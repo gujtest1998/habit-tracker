@@ -1,5 +1,5 @@
 from .cargar import mostrar_registros
-from .opciones import opcion_registro, opcion_borrar, opcion_borrar_todo
+from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo
 from .guardar import habito
 
 import tkinter as tk
@@ -26,10 +26,7 @@ def seleccionar(opcion):
 
         return True
     elif opcion == "2":
-        nombre = input("Nombre a temporizar: ")
-        horas = input("Horas: ")
-        habito(nombre, horas)
-        print("\nAnotado el tiempo para el temporizador "+nombre)
+        opcion_temporizador()
         return True
     elif opcion == "3":
         mostrar_registros()

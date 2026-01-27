@@ -1,4 +1,4 @@
-from .guardar import registrar, habito
+from .guardar import registrar, habito, registrar_categoria
 from .estadisticas import estadisticas, leer
 from .cargar import mostrar_registros
 from .opciones import opcion_registro

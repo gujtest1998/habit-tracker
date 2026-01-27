@@ -2,11 +2,15 @@ import csv
 from config import BASE_DIR
 
 from .checks import comprobar_registro
-from .guardar import registrar
+from .guardar import registrar, registrar_categoria, habito
+from .cargar import mostrar_registros
 
 def opcion_registro():
+    print("\nEstos son los temporizadores ya registrados: \n")
+    mostrar_registros()
     while True:
-        nombre = input("Nombre a registrar: ")
+        
+        nombre = input("\nNombre a registrar: ")
         comprobado = comprobar_registro(nombre)
 
         if comprobado > 0:
@@ -15,7 +19,26 @@ def opcion_registro():
         else:
             categoria = input("Categoria: ")
             registrar(nombre, categoria)
+            registrar_categoria(categoria)
             print("\nTemporizador "+nombre+" bajo la categoria "+categoria+" registrado con éxito.\n")
+
+def opcion_temporizador():
+
+    print("\nEstos son los temporizadores que puedes utilizar: ")
+    lista = mostrar_registros()
+
+    while True: 
+        try:
+            nombre = input("\nNombre a temporizar: ")
+            if nombre not in lista:
+                print("Por favor, introduce un temporizador ya registrado.")
+                continue
+
+            horas = float(input("Horas: "))
+            habito(nombre, horas)
+            print("\nAnotado el tiempo para el temporizador "+nombre+"\n")
+        except ValueError:
+            print("\nHay que introducir un número decimal.")
 
 def opcion_borrar(borrar):
     ruta = BASE_DIR / "datos" / "registro.csv"
