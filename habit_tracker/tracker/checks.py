@@ -2,6 +2,9 @@ import csv
 from config import BASE_DIR
 
 def comprobar_registro(habito):
+
+    habito = habito.lower()
+    
     ruta = BASE_DIR / "datos" / "registro.csv"
 
     if not ruta.exists():
@@ -11,7 +14,7 @@ def comprobar_registro(habito):
         lector = csv.reader(archivo)
         contador = 0
         for fila in lector:
-            if fila[0] == habito:
+            if fila[0].lower() == habito:
                 contador += 1
         return int(contador)
     

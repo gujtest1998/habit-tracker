@@ -3,21 +3,21 @@ from config import BASE_DIR
 from pathlib import Path
 from .checks import comprobar_categoria
 
-def habito(nombre, tiempo):
+def habito(nombre, tiempo, fecha):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
     ruta.parent.mkdir(exist_ok=True)
 
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
 
     with open(ruta, mode="a", newline="", encoding="utf-8") as archivo:
-        campos = ["temporizador", "tiempo"]
+        campos = ["temporizador", "tiempo", "fecha"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
-        writer.writerow({"temporizador": nombre, "tiempo": tiempo})
+        writer.writerow({"temporizador": nombre, "tiempo": tiempo, "fecha": fecha})
 
-def registrar(registro, categoria):
+def registrar(registro, categoria, objetivo):
 
     ruta = BASE_DIR / "datos" / "registro.csv"
     ruta.parent.mkdir(exist_ok=True)
@@ -25,12 +25,12 @@ def registrar(registro, categoria):
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
 
     with open(ruta, mode="a", newline="",encoding="utf-8") as archivo:
-        campos = ["registro","categoria"]
+        campos = ["registro","categoria","objetivo"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
-        writer.writerow({"registro": registro, "categoria": categoria})
+        writer.writerow({"registro": registro, "categoria": categoria, "objetivo": objetivo})
 
 def registrar_categoria(categoria):
 

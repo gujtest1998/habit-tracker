@@ -4,13 +4,13 @@ from .guardar import habito
 
 import tkinter as tk
 def mostrar_menu():
-    print("hola")
+    # se repite en bucle hasta que se pulse Salir
     while True:
         print("\n========= MENÚ DE OPCIONES =========")
-        print("1. Registrar un temporizador nuevo")
-        print("2. Seleccionar un temporizador")
-        print("3. Borrar un registro")
-        print("4. Borrar todos los registros")
+        print("1. Registrar un nuevo hábito")
+        print("2. Crear un temporizador")
+        print("3. Borrar un hábito")
+        print("4. Borrar todos los hábitos")
         print("5. Salir")
         print("====================================")
 
@@ -20,6 +20,7 @@ def mostrar_menu():
             break
         
 def seleccionar(opcion):
+    # cada opcion marcada redirige a su propia funcion
     if opcion == "1":
         #print("hola")
         opcion_registro()
@@ -29,12 +30,11 @@ def seleccionar(opcion):
         opcion_temporizador()
         return True
     elif opcion == "3":
-        mostrar_registros()
-        borrar = input("\nIntroduce el nombre del elemento a borrar: ")
-        opcion_borrar(borrar)
+        opcion_borrar()
         return True
     elif opcion == "4":
         opcion_borrar_todo()
+        return True
     elif opcion == "5":
         return False
     elif opcion == "6":
