@@ -3,7 +3,7 @@ from config import BASE_DIR
 
 from .checks import comprobar_registro
 from .guardar import registrar, registrar_categoria, habito
-from .cargar import mostrar_registros
+from .cargar import mostrar_registros, mostrar_temporizadores
 
 from datetime import datetime
 
@@ -32,6 +32,11 @@ def opcion_temporizador():
 
     lista = mostrar_registros()
 
+    if lista:
+        print("\nEstos son los hábitos ya registrados: \n")
+        for i, item in enumerate(lista, start=1):
+            print(f"{i} - {item}")
+
     while True: 
         try:
             nombre = input("\nNombre a temporizar: ")
@@ -39,27 +44,55 @@ def opcion_temporizador():
                 print("Por favor, introduce un temporizador ya registrado.")
                 continue
 
-            horas = float(input("Horas: "))
-    
-            fecha = input("Introduce la fecha (AAAA-MM-DD) o déjalo vacío para hoy: ")
-            if fecha == "":
-                fecha = datetime.now().date()
-            else:
+            while True:
+                horas = float(input("Horas: "))
+                if horas == 0:
+                    print("No se pueden introducir 0 horas.")
+                    continue
+                if horas < 0:
+                    print("No se pueden introducir horas negativas")
+                    continue
                 while True:
-                    try:
-                        fecha = datetime.strptime(fecha, "%Y-%m-%d").date()
-                        break
-                    except ValueError:
-                        print("Formato incorrecto. Debe ser AAAA-MM-DD")
+                    fecha = input("Introduce la fecha (AAAA-MM-DD) o déjalo vacío para hoy: ")
+                    
+                    if fecha == "":
+                        fecha = datetime.now().date()
+                    else:
+                        try:
+                            fecha = datetime.strptime(fecha, "%Y-%m-%d").date()
+                            fecha_hoy = datetime.now().date()
 
-            habito(nombre, horas,fecha)
-            print("\nAnotado el tiempo para el temporizador "+nombre+"\n")
+                            if fecha > fecha_hoy:
+                                print("\nLa fecha no puede ser superior a la fecha actual.")
+                                continue
+                        except ValueError:
+                            print("Formato incorrecto. Debe ser AAAA-MM-DD")
+                            continue
+                        
+                    temporizadores = mostrar_temporizadores()
+                    contador_horas = 0.0
+
+                    for temporizador in temporizadores:
+                        if datetime.strptime(temporizador["fecha"], "%Y-%m-%d").date() == fecha:
+                            contador_horas = contador_horas + float(temporizador["horas"])
+                    contador_horas = contador_horas + float(horas)
+                    if contador_horas > 24:
+                        print("Esta actividad no puede superar las 24 horas")   
+                        break
+                    else:
+                        habito(nombre,horas,fecha)
+                        print(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}\n")
+                        return     
         except ValueError:
             print("\nHay que introducir un número decimal.")
-
+        continue
 def opcion_borrar():
     # muestra previamente todos los registros a eliminar
-    mostrar_registros()
+    lista = mostrar_registros()
+    if lista:
+        print("\nEstos son los hábitos ya registrados: \n")
+        for i, item in enumerate(lista, start=1):
+            print(f"{i} - {item}")
     while True:
         borrar = input("\nIntroduce el nombre del elemento a borrar: ")
         ruta = BASE_DIR / "datos" / "registro.csv"
