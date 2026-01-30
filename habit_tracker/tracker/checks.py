@@ -1,5 +1,6 @@
 import csv
 from config import BASE_DIR
+from datetime import datetime
 
 def comprobar_registro(habito):
 
@@ -17,6 +18,7 @@ def comprobar_registro(habito):
             if fila[0].lower() == habito:
                 contador += 1
         return int(contador)
+
     
 def comprobar_categoria(categoria):
     ruta = BASE_DIR / "datos" / "categorias.csv"
@@ -27,3 +29,13 @@ def comprobar_categoria(categoria):
     with open(ruta, newline="", encoding="utf-8") as archivo:
         lector = csv.DictReader(archivo)
         return any(fila["categoria"] == categoria for fila in lector)
+    
+def comprobar_horas_temp(temporizadores, horas, fecha):
+    contador_horas = 0.0
+
+    for temporizador in temporizadores:
+        if datetime.strptime(temporizador["fecha"], "%Y-%m-%d").date() == fecha:
+            contador_horas = contador_horas + float(temporizador["horas"])
+    contador_horas = contador_horas + float(horas)
+    return contador_horas
+ 

@@ -1,9 +1,10 @@
 import csv
 from config import BASE_DIR
 
-from .checks import comprobar_registro
+from .checks import comprobar_registro, comprobar_horas_temp
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores
+from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp
 
 from datetime import datetime
 
@@ -30,62 +31,29 @@ def opcion_registro():
 
 def opcion_temporizador():
 
-    lista = mostrar_registros()
+    lista = mostrar_registros() # devuelve el listado de habitos registrados
 
     if lista:
         print("\nEstos son los hábitos ya registrados: \n")
         for i, item in enumerate(lista, start=1):
             print(f"{i} - {item}")
+    while True: #empieza el bucle para seguir creando temporizadores
+        nombre = pedir_nombre_temp(lista)
+        while True:
+            horas = pedir_horas_temp()
+            fecha = pedir_fecha_temp()              
+            temporizadores = mostrar_temporizadores()
+            contador_horas = comprobar_horas_temp(temporizadores, horas, fecha)
+            if contador_horas > 24:
+                print("Esta actividad no puede superar las 24 horas")    
+                continue #si la actividad supera las 24 horas el mismo día, vuelve a pedir las horas
+            else:
+                habito(nombre,horas,fecha)
+                print(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}") 
+                break # una vez es correcto, sale del bucle de horas y dias y vuelve al bucle original
+        continue 
+        
 
-    while True: 
-        try:
-            nombre = input("\nNombre a temporizar: ")
-            if nombre not in lista:
-                print("Por favor, introduce un temporizador ya registrado.")
-                continue
-
-            while True:
-                horas = float(input("Horas: "))
-                if horas == 0:
-                    print("No se pueden introducir 0 horas.")
-                    continue
-                if horas < 0:
-                    print("No se pueden introducir horas negativas")
-                    continue
-                while True:
-                    fecha = input("Introduce la fecha (AAAA-MM-DD) o déjalo vacío para hoy: ")
-                    
-                    if fecha == "":
-                        fecha = datetime.now().date()
-                    else:
-                        try:
-                            fecha = datetime.strptime(fecha, "%Y-%m-%d").date()
-                            fecha_hoy = datetime.now().date()
-
-                            if fecha > fecha_hoy:
-                                print("\nLa fecha no puede ser superior a la fecha actual.")
-                                continue
-                        except ValueError:
-                            print("Formato incorrecto. Debe ser AAAA-MM-DD")
-                            continue
-                        
-                    temporizadores = mostrar_temporizadores()
-                    contador_horas = 0.0
-
-                    for temporizador in temporizadores:
-                        if datetime.strptime(temporizador["fecha"], "%Y-%m-%d").date() == fecha:
-                            contador_horas = contador_horas + float(temporizador["horas"])
-                    contador_horas = contador_horas + float(horas)
-                    if contador_horas > 24:
-                        print("Esta actividad no puede superar las 24 horas")   
-                        break
-                    else:
-                        habito(nombre,horas,fecha)
-                        print(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}\n")
-                        return     
-        except ValueError:
-            print("\nHay que introducir un número decimal.")
-        continue
 def opcion_borrar():
     # muestra previamente todos los registros a eliminar
     lista = mostrar_registros()
