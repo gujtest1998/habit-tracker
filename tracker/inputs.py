@@ -1,16 +1,16 @@
 from datetime import datetime
 
-def pedir_nombre_temp(lista):
+def pedir_nombre_temp(lista_minus,lista):
     while True:
-        try:
-            nombre = input("\nNombre a temporizar: ")
-            if nombre not in lista:
-                print("Por favor, introduce un temporizador de la lista.")
-                continue   
-            else:
-                return nombre
-        except ValueError:
-            print("\nHay que introducir un número decimal.")
+        nombre = input("\nNombre a temporizar: ").lower()
+
+        for i, item in enumerate(lista_minus):
+            if item == nombre:
+                return lista[i]
+        if nombre == "volver":
+            return nombre
+        else:
+            print("\nPor favor, introduce un temporizador de la lista. ")
 
 def pedir_horas_temp():
     while True:

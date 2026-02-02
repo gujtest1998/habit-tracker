@@ -1,10 +1,17 @@
 import csv
 from config import BASE_DIR
 from datetime import datetime
+import unicodedata
+
+def normalizar(texto):
+    texto = texto.lower()
+    texto = unicodedata.normalize("NFD",texto)
+    texto = "".join(c for c in texto if unicodedata.category(c) != "Mn")
+    return texto
 
 def comprobar_registro(habito):
 
-    habito = habito.lower()
+    habito = normalizar(habito)
     
     ruta = BASE_DIR / "datos" / "registro.csv"
 
