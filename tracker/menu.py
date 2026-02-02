@@ -47,7 +47,7 @@ def seleccionar(opcion):
         mostrar_menu_borrar()
         return True
     elif opcion == "4":
-        opcion_borrar_todo()
+        print("En desarrollo")
         return True
     elif opcion == "5":
         return False
