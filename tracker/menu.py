@@ -11,7 +11,7 @@ def mostrar_menu():
         print("2. Crear un temporizador")
         print("3. Eliminar elementos")
         print("4. Modificar elementos")
-        print("5. Salir")
+        print("5. Salir.")
         print("====================================")
 
         opcion = input("\nSelecciona una opción: ")
