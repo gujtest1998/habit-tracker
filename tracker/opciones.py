@@ -5,7 +5,7 @@ from .checks import comprobar_registro, comprobar_horas_temp
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp
-from .borrar import borrar_habito, borrar_temporizadores
+from .borrar import borrar_habito, borrar_temporizadores, borrar_csv
 
 from datetime import datetime
 
@@ -102,10 +102,12 @@ def opcion_borrar_todo():
 
     if seguro == "s" or seguro == "si":
 
-        ruta = BASE_DIR / "datos" / "registro.csv"
+        borrar_csv("categorias.csv")
+        borrar_csv("registro.csv")
+        borrar_csv("temporizadores.csv")
 
-        with open(ruta, "w", encoding="utf-8"):
-            pass
+
+
 
         print("Todos los registros han sido eliminados.")
     elif seguro == "n" or seguro == "no":

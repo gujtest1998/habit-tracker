@@ -22,7 +22,7 @@ def comprobar_registro(habito):
         lector = csv.reader(archivo)
         contador = 0
         for fila in lector:
-            if fila[0].lower() == habito:
+            if fila[1].lower() == habito:
                 contador += 1
         return int(contador)
 

@@ -9,14 +9,14 @@ def habito(nombre, tiempo, fecha):
     ruta.parent.mkdir(exist_ok=True)
 
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
-    #id = contar_id()
+    id = contar_id("temporizadores.csv") + 1
     with open(ruta, mode="a", newline="", encoding="utf-8") as archivo:
         campos = ["id","temporizador", "tiempo", "fecha"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
-        writer.writerow({"temporizador": nombre, "tiempo": tiempo, "fecha": fecha})
+        writer.writerow({"id": id,"temporizador": nombre, "tiempo": tiempo, "fecha": fecha})
 
 def registrar(habito, categoria, objetivo):
 

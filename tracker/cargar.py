@@ -36,9 +36,9 @@ def mostrar_temporizadores():
         for fila in lector:
             contador +=1
             temporizadores.append({
-                "nombre": fila[0],
-                "horas": fila[1],
-                "fecha": fila[2]
+                "nombre": fila[1],
+                "horas": fila[2],
+                "fecha": fila[3]
                 })
     return temporizadores
     
@@ -55,7 +55,7 @@ def contar_temporizador(nombre):
         next(lector, None)
         contador = 0
         for fila in lector:
-           if fila[0] == nombre:
+           if fila[1] == nombre:
                contador = contador + 1
     return contador
 
