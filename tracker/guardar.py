@@ -2,35 +2,38 @@ import csv
 from config import BASE_DIR
 from pathlib import Path
 from .checks import comprobar_categoria
+from .cargar import contar_id
 
 def habito(nombre, tiempo, fecha):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
     ruta.parent.mkdir(exist_ok=True)
 
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
-
+    #id = contar_id()
     with open(ruta, mode="a", newline="", encoding="utf-8") as archivo:
-        campos = ["temporizador", "tiempo", "fecha"]
+        campos = ["id","temporizador", "tiempo", "fecha"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
         writer.writerow({"temporizador": nombre, "tiempo": tiempo, "fecha": fecha})
 
-def registrar(registro, categoria, objetivo):
+def registrar(habito, categoria, objetivo):
 
     ruta = BASE_DIR / "datos" / "registro.csv"
     ruta.parent.mkdir(exist_ok=True)
 
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
 
+    id = contar_id("registro.csv") + 1
+
     with open(ruta, mode="a", newline="",encoding="utf-8") as archivo:
-        campos = ["registro","categoria","objetivo"]
+        campos = ["id","habito","categoria","objetivo"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
-        writer.writerow({"registro": registro, "categoria": categoria, "objetivo": objetivo})
+        writer.writerow({"id": id, "habito": habito, "categoria": categoria, "objetivo": objetivo})
 
 def registrar_categoria(categoria):
 
@@ -39,14 +42,16 @@ def registrar_categoria(categoria):
 
     encabezado = not ruta.exists() or ruta.stat().st_size == 0
 
+    id = contar_id("categorias.csv") + 1
+
     with open(ruta, mode="a", newline="", encoding="utf-8") as archivo:
-        campos = ["categoria"]
+        campos = ["id","categoria"]
         writer = csv.DictWriter(archivo, fieldnames=campos)
 
         if encabezado:
             writer.writeheader()
         if not comprobar_categoria(categoria) >= 1:
-            writer.writerow({"categoria": categoria})    
+            writer.writerow({"id": id,"categoria": categoria})    
     
 
    

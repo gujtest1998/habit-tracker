@@ -1,8 +1,11 @@
 from datetime import datetime
+from .checks import normalizar
 
 def pedir_nombre_temp(lista_minus,lista):
     while True:
-        nombre = input("\nNombre a temporizar: ").lower()
+        nombre = input("\nNombre a temporizar: ")
+        nombre = normalizar(nombre)
+        
 
         for i, item in enumerate(lista_minus):
             if item == nombre:

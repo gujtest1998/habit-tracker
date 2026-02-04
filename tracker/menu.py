@@ -19,7 +19,6 @@ def mostrar_menu():
         if not seleccionar(opcion):
             break
 def mostrar_menu_borrar():
-    print("\nConsejo: Escribe 'volver' para salir al menú de opciones.")
      # se repite en bucle hasta que se pulse Salir
     while True:
         print("\n========= MENÚ DE BORRADO =========")
@@ -65,7 +64,7 @@ def borrar(opcion):
         opcion_borrar()
         return True
     elif opcion == "2":
-        print("Sección en desarrollo.")
+        borrar
         return True
     elif opcion == "3":
         opcion_borrar_todo()

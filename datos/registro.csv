@@ -1,4 +1,3 @@
-registro,categoria,objetivo
-Entrene,Ejercicio,100
-Dragon Quest VII Reimagined,Videojuegos,100
-Yakuza Kiwami,Videojuegos,50
+id,habito,categoria,objetivo
+1,Entrene,Ejercicio,5
+2,Yakuza 0,Videojuegos,5
