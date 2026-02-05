@@ -5,7 +5,7 @@ from .checks import comprobar_registro, comprobar_horas_temp
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp
-from .borrar import borrar_habito, borrar_temporizadores, borrar_csv
+from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador
 
 from datetime import datetime
 
@@ -91,6 +91,29 @@ def opcion_borrar():
             registros = borrar_temporizadores(borrar)
             print(habito)
             print(registros)
+        elif seguro == "n" or seguro == "no":
+            print("\nSabia decisión.")
+def opcion_borrar_tempo():
+    # muestra previamente todos los registros a eliminar
+    lista = mostrar_temporizadores()
+    if lista:
+        print("\nEstos son los temporizadores ya registrados: \n")
+        for i, item in enumerate(lista, start=1):
+            print(f"{i} - {item["nombre"]}: Horas '{item["horas"]}' Fecha '{item["fecha"]}'")
+        print(volver)
+    while True:
+        
+        borrar = input("\nIntroduce el número del elemento a borrar: ")
+        if borrar == "volver":
+            return False
+        temporizadores = contar_temporizador(borrar)
+        seguro = input(f"\n¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: ")
+
+        seguro = seguro.lower()
+
+        if seguro == "s" or seguro == "si":
+            habito = borrar_temporizador(borrar)
+            print(habito)
         elif seguro == "n" or seguro == "no":
             print("\nSabia decisión.")
 

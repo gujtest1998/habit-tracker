@@ -34,6 +34,7 @@ def mostrar_temporizadores():
         next(lector, None)
        
         for fila in lector:
+            print(fila)
             contador +=1
             temporizadores.append({
                 "nombre": fila[1],

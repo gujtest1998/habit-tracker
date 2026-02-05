@@ -1,5 +1,5 @@
 from .cargar import mostrar_registros
-from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo
+from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo
 from .guardar import habito
 
 import tkinter as tk
@@ -64,7 +64,7 @@ def borrar(opcion):
         opcion_borrar()
         return True
     elif opcion == "2":
-        borrar
+        opcion_borrar_tempo()
         return True
     elif opcion == "3":
         opcion_borrar_todo()
