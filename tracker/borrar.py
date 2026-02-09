@@ -5,8 +5,7 @@ def borrar_habito(borrar):
     ruta = BASE_DIR / "datos" / "registro.csv"
 
     if not ruta.exists():
-        print("No existe el archivo")
-        return
+        return 0
     filas_restantes = []
     filas_originales = []
 
@@ -25,12 +24,12 @@ def borrar_habito(borrar):
     else:
         return (f"Registro '{borrar}' eliminado.")
     
-def borrar_temporizador(borrar):
+def borrar_temporizador(borrar,seleccion):
+    
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
-        print("No existe el archivo")
-        return
+        return 0
     filas_restantes = []
     filas_originales = []
 
@@ -45,16 +44,15 @@ def borrar_temporizador(borrar):
         escritor.writerows(filas_restantes)
 
     if len(filas_originales) == len(filas_restantes):
-        return (f"El registro '{borrar}' no existe.")
+        return (f"El registro '{seleccion}' no existe.")
     else:
-        return (f"Registro '{borrar}' eliminado.")
+        return (f"Registro '{seleccion}' eliminado.")
     
 def borrar_temporizadores(temporizador):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
-        print("No existe el archivo")
-        return
+        return 0
     filas_restantes = []
     filas_originales = []
 
