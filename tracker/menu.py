@@ -74,7 +74,7 @@ def borrar(opcion):
             opcion_borrar_tempo()
             return True
         case "3":
-            opcion_borrar_todo
+            opcion_borrar_todo()
             return True
         case "4":
             #sale del bucle
