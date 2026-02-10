@@ -1,6 +1,7 @@
 from .cargar import mostrar_registros
 from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo
 from .guardar import habito
+from .checks import normalizar
 
 import tkinter as tk
 def mostrar_menu():
@@ -33,46 +34,51 @@ def mostrar_menu_borrar():
         if not borrar(opcion):
             break
 def seleccionar(opcion):
-    # cada opcion marcada redirige a su propia funcion
-    if opcion == "1":
-        #print("hola")
-        opcion_registro()
-
-        return True
-    elif opcion == "2":
-        opcion_temporizador()
-        return True
-    elif opcion == "3":
-        mostrar_menu_borrar()
-        return True
-    elif opcion == "4":
-        print("En desarrollo")
-        return True
-    elif opcion == "5":
+    # si el usuario escribe volver o salir también sale de la aplicación
+    if normalizar(opcion) == "volver" or normalizar(opcion) == "salir":
         return False
-    elif opcion == "6":
-        print("Prueba")
-        mostrar_registros()
-
-    else:
-        print("\nOpción no válida. Introduce una de las opciones.\n")
-        return True
+    # cada opcion marcada redirige a su propia funcion del fichero opciones.py
+    match opcion:
+        case "1":
+            opcion_registro()
+            return True
+        case "2":
+            opcion_temporizador()
+            return True
+        case "3":
+            mostrar_menu_borrar()
+            return True
+        case "4":
+            print("En desarrollo")
+            return True    
+        case "5":
+            print("Cerrando aplicación...")
+            return False
+        case "6":
+            print("Prueba")
+            mostrar_registros()
+        case _:
+            print("\nOpción no válida. Introduce una de las opciones.\n")
+            return True
 
 def borrar(opcion):
-    # cada opcion marcada redirige a su propia funcion
-    if opcion == "1":
-        opcion_borrar()
-        return True
-    elif opcion == "2":
-        opcion_borrar_tempo()
-        return True
-    elif opcion == "3":
-        opcion_borrar_todo()
-        return True
-    elif opcion == "4":
+    # si el usuario escribe volver o salir también sale de la aplicación
+    if normalizar(opcion) == "volver" or normalizar(opcion) == "salir":
         return False
-    elif opcion == "volver":
-        mostrar_menu()
-    else:
-        print("\nOpción no válida. Introduce una de las opciones.\n")
-        return True
+    # cada opcion marcada redirige a su propia funcion del fichero opciones.py
+    match opcion:
+        case "1":
+            opcion_borrar()
+            return True
+        case "2":
+            opcion_borrar_tempo()
+            return True
+        case "3":
+            opcion_borrar_todo
+            return True
+        case "4":
+            #sale del bucle
+            return False
+        case _:
+            print("\nOpción no válida. Introduce una de las opciones.\n")
+            return True

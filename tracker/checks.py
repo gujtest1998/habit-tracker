@@ -46,3 +46,12 @@ def comprobar_horas_temp(temporizadores, horas, fecha):
     contador_horas = contador_horas + float(horas)
     return contador_horas
  
+def validar_horas(numero):
+    try:
+        numero = float(numero)
+    except ValueError:
+        print("\nIntroduce un número de horas válido.")
+        return True
+    if float(numero) <= 0:
+        print("\nLas horas deben ser mayores que 0")
+        return True

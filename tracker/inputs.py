@@ -1,11 +1,10 @@
 from datetime import datetime
-from .checks import normalizar
+from .checks import normalizar, validar_horas
 
 def pedir_nombre_temp(lista_minus,lista):
     while True:
         nombre = input("\nNombre a temporizar: ")
         nombre = normalizar(nombre)
-        
 
         for i, item in enumerate(lista_minus):
             if item == nombre:
@@ -17,14 +16,11 @@ def pedir_nombre_temp(lista_minus,lista):
 
 def pedir_horas_temp():
     while True:
-        horas = float(input("Horas: "))
-        if horas == 0:
-            print("No se pueden introducir 0 horas.")
-            continue
-        if horas < 0:
-            print("No se pueden introducir horas negativas")
-            continue
-        return horas
+        horas = input("Horas: ")
+        if validar_horas(horas):
+            print()
+        else:
+            return horas
 
 def pedir_fecha_temp():
     while True:
