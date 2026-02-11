@@ -1,5 +1,6 @@
 import csv
 from config import BASE_DIR
+from .checks import normalizar
 
 
 def mostrar_registros(temporizador = None):
@@ -62,7 +63,7 @@ def mostrar_categorias(temporizador = None):
     return lista
 
 def contar_temporizador(nombre):
-   
+    nombre = normalizar(nombre)
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
@@ -74,7 +75,7 @@ def contar_temporizador(nombre):
         next(lector, None)
         contador = 0
         for fila in lector:
-           if fila[1] == nombre:
+           if normalizar(fila[1]) == nombre:
                contador = contador + 1
     return contador
 

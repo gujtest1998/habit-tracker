@@ -17,7 +17,7 @@ def pedir_nombre_temp(lista_minus,lista):
 def pedir_horas_temp():
     while True:
         horas = input("Horas: ")
-        if validar_horas(horas):
+        if not validar_horas(horas):
             print()
         else:
             return horas

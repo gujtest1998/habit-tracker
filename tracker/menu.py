@@ -1,4 +1,4 @@
-from .cargar import mostrar_registros
+from .cargar import mostrar_registros, mostrar_categorias, mostrar_temporizadores
 from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo
 from .guardar import habito
 from .checks import normalizar
@@ -12,7 +12,8 @@ def mostrar_menu():
         print("2. Crear un temporizador")
         print("3. Eliminar elementos")
         print("4. Modificar elementos")
-        print("5. Salir")
+        print("5. Mostrar estadísticas")
+        print("6. Salir")
         print("====================================")
 
         opcion = input("\nSelecciona una opción: ")
@@ -20,8 +21,8 @@ def mostrar_menu():
         if not seleccionar(opcion):
             break
 def mostrar_menu_borrar():
-     # se repite en bucle hasta que se pulse Salir
     while True:
+     # se repite en bucle hasta que se pulse Salir
         print("\n========= MENÚ DE BORRADO =========")
         print("1. Eliminar un hábito")
         print("2. Eliminar un temporizador")
@@ -46,17 +47,21 @@ def seleccionar(opcion):
             opcion_temporizador()
             return True
         case "3":
-            mostrar_menu_borrar()
+            lista = mostrar_registros()
+            if lista:
+                mostrar_menu_borrar()
+            else:
+                print("\nActualmente no existe ningún elemento a eliminar.")
             return True
         case "4":
             print("En desarrollo")
-            return True    
+            return True 
         case "5":
+            print("Prueba")
+            mostrar_registros()   
+        case "6":
             print("Cerrando aplicación...")
             return False
-        case "6":
-            print("Prueba")
-            mostrar_registros()
         case _:
             print("\nOpción no válida. Introduce una de las opciones.\n")
             return True

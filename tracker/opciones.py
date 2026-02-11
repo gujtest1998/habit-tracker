@@ -35,21 +35,20 @@ def opcion_registro():
 
         # si está registrado, vuelve a pedir el nombre
         if comprobado > 0:
-            print("\nEsté hábito ya está registrado. Por favor, introduce uno nuevo.")        
-        else:
-            # si no está registrado, prosigue con el resto de inputs
-            categoria = input("Categoria: ")
+            print("\nEsté hábito ya está registrado. Por favor, introduce uno nuevo.")
+            continue        
+        # si no está registrado, prosigue con el resto de inputs
+        categoria = input("Categoria: ")
 
-            while True:
-                objetivo = input("Objetivo (horas): ")
-                
-                # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
-                if validar_horas(objetivo):
-                    print()
-                else:
-                    registrar(nombre, categoria, objetivo)
-                    registrar_categoria(categoria)
-                    print("\nAñadido "+nombre+", categoria: "+categoria+", objetivo: "+objetivo+".")
+        while True:
+            objetivo = input("Objetivo (horas): ")
+            
+            # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
+            if validar_horas(objetivo):
+                registrar(nombre, categoria, objetivo)
+                registrar_categoria(categoria)
+                print("\nAñadido "+nombre+", categoria: "+categoria+", objetivo: "+objetivo+".")
+                break
 
 def opcion_temporizador():
 
@@ -97,7 +96,7 @@ def opcion_borrar():
             seguro = input(f"\n¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: ")
 
             seguro = seguro.lower()
-
+            
             if seguro == "s" or seguro == "si":
                 habito = borrar_habito(borrar)
                 registros = borrar_temporizadores(borrar)

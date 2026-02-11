@@ -51,7 +51,8 @@ def validar_horas(numero):
         numero = float(numero)
     except ValueError:
         print("\nIntroduce un número de horas válido.")
-        return True
+        return False
     if float(numero) <= 0:
         print("\nLas horas deben ser mayores que 0")
-        return True
+        return False
+    return True
