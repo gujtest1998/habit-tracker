@@ -34,7 +34,7 @@ def mostrar_menu_borrar():
 
         if not borrar(opcion):
             break
-  
+#opciones del menú principal  
 def opcion_1():
     opcion_registro()
     return True
@@ -63,7 +63,7 @@ def opcion_5():
 def opcion_6():
     print("Cerrando aplicación...")
     return False
-
+# según la elección escogida en el menú, redirige a las funciones de arriba
 menu = {
     "1": opcion_1,
     "2": opcion_2,
@@ -74,15 +74,16 @@ menu = {
 }
 
 def seleccionar(opcion):
+    # normaliza tanto volver como salir, y cierra el menú actual
     if normalizar(opcion) in ("volver", "salir"):
         return False
-
+    # si la opción escogida está en el diccionario menu, redirige a la opción escogida
     if opcion in menu:
         return menu[opcion]()
     else:
         print("\nOpción no válida.\n")
         return True
-           
+# las distintas opciones del menu borrar           
 def borrar_1():
     opcion_borrar()
     return True
@@ -95,7 +96,7 @@ def borrar_3():
 def borrar_4():
     #sale del bucle
     return False
-
+# diccionario que contiene la redirección de las funciones
 menu_borrar = {
     "1": borrar_1,
     "2": borrar_2,
@@ -107,7 +108,7 @@ def borrar(opcion):
     # si el usuario escribe volver o salir también sale de la aplicación
     if normalizar(opcion) in("volver","salir"):
         return False
-    # cada opcion marcada redirige a su propia funcion del fichero opciones.py
+    # si la opcion coincide con una del diccionario menu_borrar, redirige a esa función
     if opcion in menu_borrar:
         return menu_borrar[opcion]()
     else:
