@@ -34,56 +34,82 @@ def mostrar_menu_borrar():
 
         if not borrar(opcion):
             break
-def seleccionar(opcion):
-    # si el usuario escribe volver o salir también sale de la aplicación
-    if normalizar(opcion) == "volver" or normalizar(opcion) == "salir":
-        return False
-    # cada opcion marcada redirige a su propia funcion del fichero opciones.py
-    match opcion:
-        case "1":
-            opcion_registro()
-            return True
-        case "2":
-            opcion_temporizador()
-            return True
-        case "3":
-            lista = mostrar_registros()
-            if lista:
-                mostrar_menu_borrar()
-            else:
-                print("\nActualmente no existe ningún elemento a eliminar.")
-            return True
-        case "4":
-            print("En desarrollo")
-            return True 
-        case "5":
-            print("Prueba")
-            mostrar_registros()   
-        case "6":
-            print("Cerrando aplicación...")
-            return False
-        case _:
-            print("\nOpción no válida. Introduce una de las opciones.\n")
-            return True
+  
+def opcion_1():
+    opcion_registro()
+    return True
 
+def opcion_2():
+    opcion_temporizador()
+    return True
+
+def opcion_3():
+    lista = mostrar_registros()
+    if lista:
+        mostrar_menu_borrar()
+    else:
+        print("\nActualmente no existe ningún elemento a eliminar.")
+    return True
+
+def opcion_4():
+    print("En desarrollo")
+    return True
+
+def opcion_5():
+    print("Prueba")
+    mostrar_registros()
+    return True
+
+def opcion_6():
+    print("Cerrando aplicación...")
+    return False
+
+menu = {
+    "1": opcion_1,
+    "2": opcion_2,
+    "3": opcion_3,
+    "4": opcion_4,
+    "5": opcion_5,
+    "6": opcion_6
+}
+
+def seleccionar(opcion):
+    if normalizar(opcion) in ("volver", "salir"):
+        return False
+
+    if opcion in menu:
+        return menu[opcion]()
+    else:
+        print("\nOpción no válida.\n")
+        return True
+           
+def borrar_1():
+    opcion_borrar()
+    return True
+def borrar_2():
+    opcion_borrar_tempo()
+    return True
+def borrar_3():
+    opcion_borrar_todo()
+    return True
+def borrar_4():
+    #sale del bucle
+    return False
+
+menu_borrar = {
+    "1": borrar_1,
+    "2": borrar_2,
+    "3": borrar_3,
+    "4": borrar_4,
+}
+    
 def borrar(opcion):
     # si el usuario escribe volver o salir también sale de la aplicación
-    if normalizar(opcion) == "volver" or normalizar(opcion) == "salir":
+    if normalizar(opcion) in("volver","salir"):
         return False
     # cada opcion marcada redirige a su propia funcion del fichero opciones.py
-    match opcion:
-        case "1":
-            opcion_borrar()
-            return True
-        case "2":
-            opcion_borrar_tempo()
-            return True
-        case "3":
-            opcion_borrar_todo()
-            return True
-        case "4":
-            #sale del bucle
-            return False
-        case _:
-            print("\nOpción no válida. Introduce una de las opciones.\n")
-            return True
+    if opcion in menu_borrar:
+        return menu_borrar[opcion]()
+    else:
+        print("\nOpción no válida.\n")
+        return True
