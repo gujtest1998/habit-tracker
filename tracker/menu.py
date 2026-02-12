@@ -2,13 +2,14 @@ from .cargar import mostrar_registros, mostrar_categorias, mostrar_temporizadore
 from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo
 from .guardar import habito
 from .checks import normalizar
+from .colores import ROJO, VERDE, CIAN, RESET
 
 import tkinter as tk
 def mostrar_menu():
     # se repite en bucle hasta que se pulse Salir
     while True:
         print("\n========= MENÚ DE OPCIONES =========")
-        print("1. Registrar un nuevo hábito")
+        print("1. Registrar un nuevo hábito (100%)")
         print("2. Crear un temporizador")
         print("3. Eliminar elementos")
         print("4. Modificar elementos")
@@ -112,5 +113,5 @@ def borrar(opcion):
     if opcion in menu_borrar:
         return menu_borrar[opcion]()
     else:
-        print("\nOpción no válida.\n")
+        print(f"\n{ROJO}Opción no válida.{RESET}\n")
         return True

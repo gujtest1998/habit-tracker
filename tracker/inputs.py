@@ -1,5 +1,6 @@
 from datetime import datetime
 from .checks import normalizar, validar_horas
+from .colores import ROJO, VERDE, CIAN, RESET
 
 def pedir_nombre_temp(lista_minus,lista):
     while True:
@@ -12,14 +13,12 @@ def pedir_nombre_temp(lista_minus,lista):
         if nombre == "volver":
             return nombre
         else:
-            print("\nPor favor, introduce un temporizador de la lista. ")
+            print(f"\n{ROJO}Por favor, introduce un temporizador de la lista.{RESET}")
 
 def pedir_horas_temp():
     while True:
-        horas = input("Horas: ")
-        if not validar_horas(horas):
-            print()
-        else:
+        horas = input("Duración de la actividad (horas): ")
+        if validar_horas(horas):
             return horas
 
 def pedir_fecha_temp():
@@ -34,10 +33,10 @@ def pedir_fecha_temp():
                     fecha_hoy = datetime.now().date()
 
                     if fecha > fecha_hoy:
-                        print("\nLa fecha no puede ser superior a la fecha actual.")
+                        print(f"\n{ROJO}La fecha no puede ser superior a la fecha actual.{RESET}")
                         continue
                 except ValueError:
-                    print("Formato incorrecto. Debe ser AAAA-MM-DD")
+                    print(f"\n{ROJO}Formato incorrecto. Debe ser AAAA-MM-DD{RESET}")
                     continue
             return fecha
         

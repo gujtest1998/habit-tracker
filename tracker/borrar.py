@@ -1,6 +1,7 @@
 import csv
 from config import BASE_DIR
 from .checks import normalizar
+from .colores import ROJO, VERDE, CIAN, RESET
 
 def borrar_habito(borrar):
     borrar = normalizar(borrar)
@@ -45,9 +46,9 @@ def borrar_temporizador(borrar,seleccion):
         escritor.writerows(filas_restantes)
 
     if len(filas_originales) == len(filas_restantes):
-        return (f"El registro '{seleccion}' no existe.")
+        return (f"{ROJO}El registro '{seleccion}' no existe.{RESET}")
     else:
-        return (f"Registro '{seleccion}' eliminado.")
+        return (f"{VERDE}Registro '{seleccion}' eliminado.{RESET}")
     
 def borrar_temporizadores(temporizador):
     temporizador = normalizar(temporizador)
@@ -69,9 +70,9 @@ def borrar_temporizadores(temporizador):
         escritor.writerows(filas_restantes)
 
     if len(filas_originales) == len(filas_restantes):
-        return (f"El temporizador '{temporizador}' no existe.")
+        return (f"{ROJO}El temporizador '{temporizador}' no existe.{RESET}")
     else:
-        return (f"Todos los temporizadores asociados a '{temporizador}' han sido eliminados.")
+        return (f"{VERDE}Todos los temporizadores asociados a '{temporizador}' han sido eliminados.{VERDE}")
 
 def borrar_csv(fichero):
     ruta = BASE_DIR / "datos" / f"{fichero}"

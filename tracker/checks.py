@@ -1,6 +1,7 @@
 import csv
 from config import BASE_DIR
 from datetime import datetime
+from .colores import ROJO, VERDE, CIAN, RESET
 import unicodedata
 
 def normalizar(texto):
@@ -45,14 +46,14 @@ def comprobar_horas_temp(temporizadores, horas, fecha):
             contador_horas = contador_horas + float(temporizador["horas"])
     contador_horas = contador_horas + float(horas)
     return contador_horas
- 
+
 def validar_horas(numero):
     try:
         numero = float(numero)
     except ValueError:
-        print("\nIntroduce un número de horas válido.")
+        print(f"\n{ROJO}Introduce un número de horas válido.{RESET}")
         return False
     if float(numero) <= 0:
-        print("\nLas horas deben ser mayores que 0")
+        print(f"\n{ROJO}Las horas deben ser mayores que 0{RESET}")
         return False
     return True
