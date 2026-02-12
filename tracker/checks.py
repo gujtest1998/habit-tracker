@@ -1,7 +1,7 @@
 import csv
 from config import BASE_DIR
 from datetime import datetime
-from .colores import ROJO, VERDE, CIAN, RESET
+from .colores import ROJO, VERDE, CIAN, RESET, print_color
 import unicodedata
 
 def normalizar(texto):
@@ -51,9 +51,9 @@ def validar_horas(numero):
     try:
         numero = float(numero)
     except ValueError:
-        print(f"\n{ROJO}Introduce un número de horas válido.{RESET}")
+        print_color("\nIntroduce un número de horas válido.",ROJO)
         return False
     if float(numero) <= 0:
-        print(f"\n{ROJO}Las horas deben ser mayores que 0{RESET}")
+        print_color("\nLas horas deben ser mayores que 0",ROJO)
         return False
     return True

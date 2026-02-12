@@ -1,7 +1,7 @@
 import csv
 from config import BASE_DIR
 
-from .colores import ROJO, VERDE, CIAN, RESET
+from .colores import ROJO, VERDE, CIAN, RESET, print_color
 from .checks import comprobar_registro, comprobar_horas_temp, normalizar, validar_horas
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias
@@ -62,7 +62,8 @@ def opcion_temporizador():
         for i, item in enumerate(sorted(lista), start=1):
             print(f"{i} - {item}")
     while True: #empieza el bucle para seguir creando temporizadores
-        print(f"\n{CIAN}Opción seleccionada: Crear un temporizador{RESET}")
+        print_color("\nOpción seleccionada: Crear un temporizador",CIAN)
+        #print(f"\n{CIAN}Opción seleccionada: Crear un temporizador{RESET}")
         nombre = pedir_nombre_temp(lista_minus,lista)
         if normalizar(nombre) == "volver" or normalizar(nombre) == "salir":
             return False
