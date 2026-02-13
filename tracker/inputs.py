@@ -1,7 +1,18 @@
 from datetime import datetime
-from .checks import normalizar, validar_horas
-from .colores import ROJO, VERDE, CIAN, RESET
+from .checks import normalizar, validar_horas, comprobar_registro
+from .colores import ROJO, VERDE, CIAN, RESET,print_color
+def pedir_nombre_registro():
+     while True:
+        nombre = input("Nombre a registrar: ")
+     # devuelve el número de veces que el nombre está registrado
+        comprobado = comprobar_registro(nombre)
 
+        # si está registrado, vuelve a pedir el nombre
+        if comprobado > 0:
+            print_color("Esté hábito ya está registrado. Por favor, introduce uno nuevo.", ROJO)
+            continue
+        else: 
+            return nombre        
 def pedir_nombre_temp(lista_minus,lista):
     while True:
         nombre = input("\nNombre a temporizar: ")
@@ -13,7 +24,7 @@ def pedir_nombre_temp(lista_minus,lista):
         if nombre == "volver":
             return nombre
         else:
-            print(f"\n{ROJO}Por favor, introduce un temporizador de la lista.{RESET}")
+            print_color(f"\nPor favor, introduce un temporizador de la lista.",ROJO)
 
 def pedir_horas_temp():
     while True:
@@ -33,10 +44,10 @@ def pedir_fecha_temp():
                     fecha_hoy = datetime.now().date()
 
                     if fecha > fecha_hoy:
-                        print(f"\n{ROJO}La fecha no puede ser superior a la fecha actual.{RESET}")
+                        print_color(f"\nLa fecha no puede ser superior a la fecha actual.",ROJO)
                         continue
                 except ValueError:
-                    print(f"\n{ROJO}Formato incorrecto. Debe ser AAAA-MM-DD{RESET}")
+                    print_color(f"\nFormato incorrecto. Debe ser AAAA-MM-DD",ROJO)
                     continue
             return fecha
         

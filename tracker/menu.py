@@ -2,7 +2,7 @@ from .cargar import mostrar_registros, mostrar_categorias, mostrar_temporizadore
 from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo
 from .guardar import habito
 from .checks import normalizar
-from .colores import ROJO, VERDE, CIAN, RESET
+from .colores import ROJO, VERDE, CIAN, RESET, print_color
 
 import tkinter as tk
 def mostrar_menu():
@@ -10,7 +10,7 @@ def mostrar_menu():
     while True:
         print("\n========= MENÚ DE OPCIONES =========")
         print("1. Registrar un nuevo hábito (100%)")
-        print("2. Crear un temporizador")
+        print("2. Crear un temporizador (100%)")
         print("3. Eliminar elementos")
         print("4. Modificar elementos")
         print("5. Mostrar estadísticas")
@@ -49,7 +49,7 @@ def opcion_3():
     if lista:
         mostrar_menu_borrar()
     else:
-        print("\nActualmente no existe ningún elemento a eliminar.")
+        print_color("\nActualmente no existe ningún elemento a eliminar.",CIAN)
     return True
 
 def opcion_4():
@@ -58,11 +58,11 @@ def opcion_4():
 
 def opcion_5():
     print("Prueba")
-    mostrar_registros()
+    print(mostrar_registros())
     return True
 
 def opcion_6():
-    print("Cerrando aplicación...")
+    print_color("Cerrando aplicación...",VERDE)
     return False
 # según la elección escogida en el menú, redirige a las funciones de arriba
 menu = {
@@ -82,7 +82,7 @@ def seleccionar(opcion):
     if opcion in menu:
         return menu[opcion]()
     else:
-        print("\nOpción no válida.\n")
+        print_color("\nOpción no válida.\n",ROJO)
         return True
 # las distintas opciones del menu borrar           
 def borrar_1():
@@ -113,5 +113,5 @@ def borrar(opcion):
     if opcion in menu_borrar:
         return menu_borrar[opcion]()
     else:
-        print(f"\n{ROJO}Opción no válida.{RESET}\n")
+        print_color("\nOpción no válida.\n",ROJO)
         return True
