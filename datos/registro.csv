@@ -1,2 +1,2 @@
-id,habito,categoria,objetivo
-1,Entrene,Ejercicio,5
+id,habito,id_categoria,objetivo
+1,Entrene,1,5

@@ -63,20 +63,21 @@ def mostrar_categorias(temporizador = None):
     return lista
 
 def contar_temporizador(nombre):
-    nombre = normalizar(nombre)
+
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
         return 0
-
 
     with open(ruta, newline="", encoding="utf-8") as archivo:
         lector = csv.reader(archivo)
         next(lector, None)
         contador = 0
         for fila in lector:
-           if normalizar(fila[1]) == nombre:
+            if normalizar(fila[1]) == normalizar(nombre):
                contador = contador + 1
+            else:
+               return False
     return contador
 
 def contar_id(fichero):
@@ -90,3 +91,19 @@ def contar_id(fichero):
         lector = csv.DictReader(archivo)
         ids = [int(fila["id"]) for fila in lector]
     return max(ids, default=0) + 1
+
+def categoria_id(categoria):
+    ruta = BASE_DIR / "datos" / "categorias.csv"
+
+    if not ruta.exists():
+        return 0
+
+    with open(ruta, newline="", encoding="utf-8") as archivo:
+        lector = csv.reader(archivo)
+        next(lector, None)
+       
+        for fila in lector:
+            if fila[1].lower() == categoria.lower():
+                return fila[0]
+
+  

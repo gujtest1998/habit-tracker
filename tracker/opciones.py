@@ -4,7 +4,7 @@ from config import BASE_DIR
 from .colores import ROJO, VERDE, CIAN, RESET, print_color
 from .checks import comprobar_registro, comprobar_horas_temp, normalizar, validar_horas
 from .guardar import registrar, registrar_categoria, habito
-from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias
+from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias, categoria_id
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro
 from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador, borrar_categoria
 
@@ -42,8 +42,9 @@ def opcion_registro():
             
             # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
             if validar_horas(objetivo):
-                registrar(nombre, categoria, objetivo)
                 registrar_categoria(categoria)
+                id_categoria = categoria_id(categoria)
+                registrar(nombre, id_categoria, objetivo)
                 print_color("\nAñadido "+nombre+", categoria: "+categoria+", objetivo: "+objetivo+".",VERDE)
                 break
 
@@ -95,14 +96,17 @@ def opcion_borrar():
             if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
                 return False
             temporizadores = contar_temporizador(borrar)
-            seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: {RESET}")
-            seguro = seguro.lower()
+            if temporizadores == False:
+                print_color("Este hábito no existe.",ROJO)
+            else:
+                seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: {RESET}")
+                seguro = seguro.lower()
             
-            if seguro == "s" or seguro == "si":
-                habito = borrar_habito(borrar)
-                registros = borrar_temporizadores(borrar)
-            elif seguro == "n" or seguro == "no":
-                return
+                if seguro == "s" or seguro == "si":
+                    habito = borrar_habito(borrar)
+                    registros = borrar_temporizadores(borrar)
+                elif seguro == "n" or seguro == "no":
+                    return
     else:
         print_color("\nNo hay ningún hábito a borrar.",CIAN)
 def opcion_borrar_tempo():
@@ -152,7 +156,7 @@ def opcion_borrar_categoria():
             if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
                 return False
             #temporizadores = contar_temporizador(borrar)
-            seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}? s/n: {RESET}")
+            seguro = input(f"\n{ROJO}La categoria {borrar} tiene x hábitos asociados, con x registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
             seguro = seguro.lower()
             
             if seguro == "s" or seguro == "si":

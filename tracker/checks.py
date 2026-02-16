@@ -36,7 +36,8 @@ def comprobar_categoria(categoria):
     
     with open(ruta, newline="", encoding="utf-8") as archivo:
         lector = csv.DictReader(archivo)
-        return any(fila["categoria"] == categoria for fila in lector)
+
+        return any(fila["categoria"].lower() == categoria.lower() for fila in lector)
     
 def comprobar_horas_temp(temporizadores, horas, fecha):
     contador_horas = 0.0
