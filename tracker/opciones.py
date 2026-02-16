@@ -6,7 +6,7 @@ from .checks import comprobar_registro, comprobar_horas_temp, normalizar, valida
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro
-from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador
+from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador, borrar_categoria
 
 from datetime import datetime
 # se guarda en una variable para luego simplemente mostrarlo en pantalla
@@ -136,6 +136,32 @@ def opcion_borrar_tempo():
                 return
     else:
         print_color("No hay ningún temporizador a eliminar.",CIAN)
+
+def opcion_borrar_categoria():
+    # muestra previamente todos los registros a eliminar
+    lista = mostrar_categorias()
+    if lista:
+        print("\nEstos son las categorias ya registradas: \n")
+        for i, item in enumerate(lista, start=1):
+            print(f"{i} - {item}")
+        print(volver)
+        while True:
+            
+            borrar = input("\nIntroduce el nombre del elemento a borrar: ")
+            #borrar = normalizar(borrar)
+            if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
+                return False
+            #temporizadores = contar_temporizador(borrar)
+            seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}? s/n: {RESET}")
+            seguro = seguro.lower()
+            
+            if seguro == "s" or seguro == "si":
+                habito = borrar_categoria(borrar)
+                #registros = borrar_temporizadores(borrar)
+            elif seguro == "n" or seguro == "no":
+                return
+    else:
+        print_color("\nNo hay ninguna categoria a borrar.",CIAN)
 
 def opcion_borrar_todo():
     lista1 = mostrar_temporizadores()

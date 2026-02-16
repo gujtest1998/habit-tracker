@@ -73,6 +73,29 @@ def borrar_temporizadores(temporizador):
         return (f"{ROJO}El temporizador '{temporizador}' no existe.{RESET}")
     else:
         return (f"{VERDE}Todos los temporizadores asociados a '{temporizador}' han sido eliminados.{VERDE}")
+def borrar_categoria(borrar):
+    borrar = normalizar(borrar)
+    ruta = BASE_DIR / "datos" / "categorias.csv"
+
+    if not ruta.exists():
+        return 0
+    filas_restantes = []
+    filas_originales = []
+
+    with open(ruta, newline="", encoding="utf-8") as archivo:
+        lector = csv.reader(archivo)
+        for fila in lector:
+            filas_originales.append(fila)
+            if normalizar(fila[1]) != borrar:
+                filas_restantes.append(fila)
+    with open(ruta, "w", newline="", encoding="utf-8") as archivo:
+        escritor = csv.writer(archivo)
+        escritor.writerows(filas_restantes)
+
+    if len(filas_originales) == len(filas_restantes):
+        return (f"{ROJO}La categoría '{borrar}' no existe.{RESET}")
+    else:
+        return (f"{ROJO}La categoría '{borrar}' ha sido eliminada.{RESET}")
 
 def borrar_csv(fichero):
     ruta = BASE_DIR / "datos" / f"{fichero}"

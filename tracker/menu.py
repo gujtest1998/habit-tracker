@@ -1,5 +1,5 @@
 from .cargar import mostrar_registros, mostrar_categorias, mostrar_temporizadores
-from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo
+from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo, opcion_borrar_categoria
 from .guardar import habito
 from .checks import normalizar
 from .colores import ROJO, VERDE, CIAN, RESET, print_color
@@ -27,8 +27,9 @@ def mostrar_menu_borrar():
         print("\n========= MENÚ DE BORRADO =========")
         print("1. Eliminar un hábito")
         print("2. Eliminar un temporizador")
-        print("3. Eliminar todos los elementos")
-        print("4. Salir")
+        print("3. Eliminar una categoría")
+        print("4. Eliminar todos los elementos")
+        print("5. Salir")
         print("====================================")
 
         opcion = input("\nSelecciona una opción: ")
@@ -92,9 +93,12 @@ def borrar_2():
     opcion_borrar_tempo()
     return True
 def borrar_3():
-    opcion_borrar_todo()
+    opcion_borrar_categoria()
     return True
 def borrar_4():
+    opcion_borrar_todo()
+    return True
+def borrar_5():
     #sale del bucle
     return False
 # diccionario que contiene la redirección de las funciones
@@ -103,6 +107,7 @@ menu_borrar = {
     "2": borrar_2,
     "3": borrar_3,
     "4": borrar_4,
+    "5": borrar_5
 }
     
 def borrar(opcion):
