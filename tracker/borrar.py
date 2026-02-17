@@ -4,8 +4,9 @@ from .checks import normalizar
 from .colores import ROJO, VERDE, CIAN, RESET, print_color
 
 def borrar_habito(borrar):
+    print(borrar)
     borrar = normalizar(borrar)
-    ruta = BASE_DIR / "datos" / "registro.csv"
+    ruta = BASE_DIR / "datos" / "habitos.csv"
 
     if not ruta.exists():
         return 0
@@ -63,7 +64,7 @@ def borrar_temporizadores(temporizador):
         lector = csv.reader(archivo)
         for fila in lector:
             filas_originales.append(fila)
-            if normalizar(fila[1]) != temporizador:
+            if normalizar(fila[2]) != temporizador:
                 filas_restantes.append(fila)
     with open(ruta, "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
@@ -100,5 +101,4 @@ def borrar_categoria(borrar):
 def borrar_csv(fichero):
     ruta = BASE_DIR / "datos" / f"{fichero}"
 
-    with open(ruta, "w", encoding="utf-8"):
-        pass
+    open(ruta, "w").close()

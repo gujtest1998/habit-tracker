@@ -14,7 +14,7 @@ def comprobar_registro(habito):
 
     habito = normalizar(habito)
     
-    ruta = BASE_DIR / "datos" / "registro.csv"
+    ruta = BASE_DIR / "datos" / "habitos.csv"
 
     if not ruta.exists():
         return 0

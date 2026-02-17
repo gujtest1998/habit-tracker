@@ -5,7 +5,7 @@ from .checks import normalizar
 
 def mostrar_registros(temporizador = None):
     
-    ruta = BASE_DIR / "datos" / "registro.csv"
+    ruta = BASE_DIR / "datos" / "habitos.csv"
 
     if not ruta.exists():
         return 0
@@ -39,9 +39,10 @@ def mostrar_temporizadores():
             contador +=1
             temporizadores.append({
                 "id": fila[0],
-                "nombre": fila[1],
-                "horas": fila[2],
-                "fecha": fila[3]
+                "id_habito": fila[1],
+                "nombre": fila[2],
+                "horas": fila[3],
+                "fecha": fila[4]
                 })
     return temporizadores
 def mostrar_categorias(temporizador = None):
@@ -63,6 +64,22 @@ def mostrar_categorias(temporizador = None):
     return lista
 
 def contar_temporizador(nombre):
+    ruta = BASE_DIR / "datos" / "temporizadores.csv"
+
+    if not ruta.exists():
+        return 0
+
+    with open(ruta, newline="", encoding="utf-8") as archivo:
+        lector = csv.reader(archivo)
+        next(lector, None)
+        contador = 0
+        for fila in lector:
+            if normalizar(fila[2]) == normalizar(nombre):
+               contador = contador + 1
+            else:
+               return False
+    return contador
+def contar_temporizador_cat(id_habito):
 
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
@@ -74,11 +91,12 @@ def contar_temporizador(nombre):
         next(lector, None)
         contador = 0
         for fila in lector:
-            if normalizar(fila[1]) == normalizar(nombre):
+            if fila[1] == id_habito:
                contador = contador + 1
             else:
                return False
     return contador
+
 
 def contar_id(fichero):
    
@@ -92,7 +110,35 @@ def contar_id(fichero):
         ids = [int(fila["id"]) for fila in lector]
     return max(ids, default=0) + 1
 
-def categoria_id(categoria):
+def dev_habito_id(habito):
+    ruta = BASE_DIR / "datos" / "habitos.csv"
+
+    if not ruta.exists():
+        return 0
+
+    with open(ruta, newline="", encoding="utf-8") as archivo:
+        lector = csv.reader(archivo)
+        next(lector, None)
+       
+        for fila in lector:
+            if fila[1].lower() == habito.lower():
+                return fila[0]
+def dev_lista_habitos_cat(id_categoria):
+    ruta = BASE_DIR / "datos" / "habitos.csv"
+
+    if not ruta.exists():
+        return 0
+
+    with open(ruta, newline="", encoding="utf-8") as archivo:
+        lector = csv.reader(archivo)
+        next(lector, None)
+        lista = []
+        for fila in lector:
+            if fila[2] == id_categoria:
+                lista.append(fila[1]) 
+        return lista  
+            
+def dev_categoria_id(categoria):
     ruta = BASE_DIR / "datos" / "categorias.csv"
 
     if not ruta.exists():
@@ -106,4 +152,3 @@ def categoria_id(categoria):
             if fila[1].lower() == categoria.lower():
                 return fila[0]
 
-  

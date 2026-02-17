@@ -4,7 +4,7 @@ from config import BASE_DIR
 from .colores import ROJO, VERDE, CIAN, RESET, print_color
 from .checks import comprobar_registro, comprobar_horas_temp, normalizar, validar_horas
 from .guardar import registrar, registrar_categoria, habito
-from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias, categoria_id
+from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias,dev_lista_habitos_cat, dev_categoria_id, dev_habito_id
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro
 from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador, borrar_categoria
 
@@ -43,7 +43,7 @@ def opcion_registro():
             # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
             if validar_horas(objetivo):
                 registrar_categoria(categoria)
-                id_categoria = categoria_id(categoria)
+                id_categoria = dev_categoria_id(categoria)
                 registrar(nombre, id_categoria, objetivo)
                 print_color("\nAñadido "+nombre+", categoria: "+categoria+", objetivo: "+objetivo+".",VERDE)
                 break
@@ -69,13 +69,14 @@ def opcion_temporizador():
         fecha = pedir_fecha_temp()  
         while True:
             horas = pedir_horas_temp()
+            id_habito = dev_habito_id(nombre)
             temporizadores = mostrar_temporizadores()
-            contador_horas = comprobar_horas_temp(temporizadores, horas, fecha)
+            contador_horas = comprobar_horas_temp(temporizadores,horas,fecha)
             if contador_horas > 24:
                 print_color("\nEl total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
                 continue #si la actividad supera las 24 horas el mismo día, vuelve a pedir las horas
             else:     
-                habito(nombre,horas,fecha)
+                habito(id_habito,nombre,horas,fecha)
                 print_color(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}",VERDE)
                 break # una vez es correcto, sale del bucle de horas y dias y vuelve al bucle original
         continue 
@@ -90,12 +91,12 @@ def opcion_borrar():
             print(f"{i} - {item}")
         print(volver)
         while True:
-            
             borrar = input("\nIntroduce el nombre del elemento a borrar: ")
             #borrar = normalizar(borrar)
             if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
                 return False
             temporizadores = contar_temporizador(borrar)
+            print(temporizadores)
             if temporizadores == False:
                 print_color("Este hábito no existe.",ROJO)
             else:
@@ -152,11 +153,15 @@ def opcion_borrar_categoria():
         while True:
             
             borrar = input("\nIntroduce el nombre del elemento a borrar: ")
+            id_categoria = dev_categoria_id(borrar)
+            num_temporizadores = ""
+            lista_habitos_cat = dev_lista_habitos_cat(id_categoria)
+            num_habitos = len(lista_habitos_cat)
             #borrar = normalizar(borrar)
             if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
                 return False
             #temporizadores = contar_temporizador(borrar)
-            seguro = input(f"\n{ROJO}La categoria {borrar} tiene x hábitos asociados, con x registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
+            seguro = input(f"\n{ROJO}La categoria {borrar} tiene {num_habitos} hábitos asociados, con {num_temporizadores} registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
             seguro = seguro.lower()
             
             if seguro == "s" or seguro == "si":
@@ -180,7 +185,7 @@ def opcion_borrar_todo():
         if seguro == "s" or seguro == "si":
 
             borrar_csv("categorias.csv")
-            borrar_csv("registro.csv")
+            borrar_csv("habitos.csv")
             borrar_csv("temporizadores.csv")
             print(f"{VERDE}Todos los registros han sido eliminados.{RESET}")
         elif seguro == "n" or seguro == "no":

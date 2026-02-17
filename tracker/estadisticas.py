@@ -2,7 +2,7 @@ import csv
 from config import BASE_DIR
 
 def leer():
-    ruta = BASE_DIR / "datos" / "registro.csv"
+    ruta = BASE_DIR / "datos" / "habitos.csv"
 
     if not ruta.exists():
         return []
