@@ -4,7 +4,7 @@ from config import BASE_DIR
 from .colores import ROJO, VERDE, CIAN, RESET, print_color
 from .checks import comprobar_registro, comprobar_horas_temp, normalizar, validar_horas
 from .guardar import registrar, registrar_categoria, habito
-from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, mostrar_categorias,dev_lista_habitos_cat, dev_categoria_id, dev_habito_id
+from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, contar_habitos, mostrar_categorias,dev_temporizador_id,dev_lista_habitos_cat, dev_categoria_id, dev_habito_id, dev_lista_temporizadores_cat
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro
 from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador, borrar_categoria
 
@@ -71,6 +71,7 @@ def opcion_temporizador():
             horas = pedir_horas_temp()
             id_habito = dev_habito_id(nombre)
             temporizadores = mostrar_temporizadores()
+            print(temporizadores)
             contador_horas = comprobar_horas_temp(temporizadores,horas,fecha)
             if contador_horas > 24:
                 print_color("\nEl total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
@@ -92,20 +93,21 @@ def opcion_borrar():
         print(volver)
         while True:
             borrar = input("\nIntroduce el nombre del elemento a borrar: ")
+            
             #borrar = normalizar(borrar)
             if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
                 return False
             temporizadores = contar_temporizador(borrar)
-            print(temporizadores)
-            if temporizadores == False:
+            habitos = contar_habitos(borrar)
+            if habitos == False:
                 print_color("Este hábito no existe.",ROJO)
             else:
                 seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: {RESET}")
                 seguro = seguro.lower()
             
                 if seguro == "s" or seguro == "si":
-                    habito = borrar_habito(borrar)
-                    registros = borrar_temporizadores(borrar)
+                    habito = borrar_habito(borrar,dev_habito_id(borrar))
+                    registros = borrar_temporizadores(dev_temporizador_id(borrar),temporizadores)
                 elif seguro == "n" or seguro == "no":
                     return
     else:
@@ -154,18 +156,19 @@ def opcion_borrar_categoria():
             
             borrar = input("\nIntroduce el nombre del elemento a borrar: ")
             id_categoria = dev_categoria_id(borrar)
-            num_temporizadores = ""
-            lista_habitos_cat = dev_lista_habitos_cat(id_categoria)
-            num_habitos = len(lista_habitos_cat)
-            #borrar = normalizar(borrar)
+            
+            lista_habitos = dev_lista_habitos_cat(id_categoria)
+            lista_temporizadores = dev_lista_temporizadores_cat(lista_habitos,id_categoria)
+
             if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
                 return False
+            
             #temporizadores = contar_temporizador(borrar)
-            seguro = input(f"\n{ROJO}La categoria {borrar} tiene {num_habitos} hábitos asociados, con {num_temporizadores} registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
+            seguro = input(f"\n{ROJO}La categoria {borrar} tiene {len(lista_habitos)} hábitos asociados, con {len(lista_temporizadores)} registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
             seguro = seguro.lower()
             
             if seguro == "s" or seguro == "si":
-                habito = borrar_categoria(borrar)
+                habito = borrar_categoria(borrar,id_categoria,lista_habitos,lista_temporizadores)
                 #registros = borrar_temporizadores(borrar)
             elif seguro == "n" or seguro == "no":
                 return

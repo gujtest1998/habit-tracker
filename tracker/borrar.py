@@ -3,9 +3,7 @@ from config import BASE_DIR
 from .checks import normalizar
 from .colores import ROJO, VERDE, CIAN, RESET, print_color
 
-def borrar_habito(borrar):
-    print(borrar)
-    borrar = normalizar(borrar)
+def borrar_habito(borrar,id_borrar):
     ruta = BASE_DIR / "datos" / "habitos.csv"
 
     if not ruta.exists():
@@ -17,7 +15,7 @@ def borrar_habito(borrar):
         lector = csv.reader(archivo)
         for fila in lector:
             filas_originales.append(fila)
-            if normalizar(fila[1]) != borrar:
+            if fila[0] != id_borrar:
                 filas_restantes.append(fila)
     with open(ruta, "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
@@ -28,7 +26,7 @@ def borrar_habito(borrar):
     else:
         return (f"{ROJO}Registro '{borrar}' eliminado.{RESET}")
     
-def borrar_temporizador(borrar,seleccion):
+def borrar_temporizador(seleccion,borrar):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
@@ -51,8 +49,7 @@ def borrar_temporizador(borrar,seleccion):
     else:
         return (f"{VERDE}Registro '{seleccion}' eliminado.{RESET}")
     
-def borrar_temporizadores(temporizador):
-    temporizador = normalizar(temporizador)
+def borrar_temporizadores(temporizador,id_temporizador):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
@@ -64,7 +61,7 @@ def borrar_temporizadores(temporizador):
         lector = csv.reader(archivo)
         for fila in lector:
             filas_originales.append(fila)
-            if normalizar(fila[2]) != temporizador:
+            if normalizar(fila[0]) != id_temporizador:
                 filas_restantes.append(fila)
     with open(ruta, "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
@@ -74,8 +71,12 @@ def borrar_temporizadores(temporizador):
         return (f"{ROJO}El temporizador '{temporizador}' no existe.{RESET}")
     else:
         return (f"{VERDE}Todos los temporizadores asociados a '{temporizador}' han sido eliminados.{VERDE}")
-def borrar_categoria(borrar):
-    borrar = normalizar(borrar)
+def borrar_categoria(borrar,id_categoria,lista_habitos,lista_temporizadores):
+    
+    for habitos in lista_habitos:
+        borrar_habito(habitos[1],habitos[0])
+    for temporizadores in lista_temporizadores:
+        borrar_temporizador(temporizadores[2],temporizadores[0])
     ruta = BASE_DIR / "datos" / "categorias.csv"
 
     if not ruta.exists():
@@ -87,7 +88,7 @@ def borrar_categoria(borrar):
         lector = csv.reader(archivo)
         for fila in lector:
             filas_originales.append(fila)
-            if normalizar(fila[1]) != borrar:
+            if normalizar(fila[0]) != id_categoria:
                 filas_restantes.append(fila)
     with open(ruta, "w", newline="", encoding="utf-8") as archivo:
         escritor = csv.writer(archivo)
