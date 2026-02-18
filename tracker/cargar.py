@@ -122,7 +122,6 @@ def contar_id(fichero):
 
 def dev_habito_id(habito):
     ruta = BASE_DIR / "datos" / "habitos.csv"
-
     if not ruta.exists():
         return 0
 
@@ -134,7 +133,7 @@ def dev_habito_id(habito):
             if fila[1].lower() == habito.lower():
                 return fila[0]
 def dev_temporizador_id(temporizador):
-    ruta = BASE_DIR / "datos" / "habitos.csv"
+    ruta = BASE_DIR / "datos" / "temporizadores.csv"
 
     if not ruta.exists():
         return 0
@@ -144,7 +143,7 @@ def dev_temporizador_id(temporizador):
         next(lector, None)
        
         for fila in lector:
-            if fila[0].lower() == temporizador.lower():
+            if fila[2] == temporizador:
                 return fila[0]
 def dev_lista_habitos_cat(id_categoria):
     ruta = BASE_DIR / "datos" / "habitos.csv"

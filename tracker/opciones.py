@@ -71,7 +71,6 @@ def opcion_temporizador():
             horas = pedir_horas_temp()
             id_habito = dev_habito_id(nombre)
             temporizadores = mostrar_temporizadores()
-            print(temporizadores)
             contador_horas = comprobar_horas_temp(temporizadores,horas,fecha)
             if contador_horas > 24:
                 print_color("\nEl total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
@@ -104,10 +103,10 @@ def opcion_borrar():
             else:
                 seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: {RESET}")
                 seguro = seguro.lower()
-            
+                
                 if seguro == "s" or seguro == "si":
+                    registros = borrar_temporizadores(dev_habito_id(borrar),temporizadores)
                     habito = borrar_habito(borrar,dev_habito_id(borrar))
-                    registros = borrar_temporizadores(dev_temporizador_id(borrar),temporizadores)
                 elif seguro == "n" or seguro == "no":
                     return
     else:
@@ -138,7 +137,6 @@ def opcion_borrar_tempo():
 
             if seguro == "s" or seguro == "si":
                 habito = borrar_temporizador(borrar["id"],borrar)
-                print(habito)
             elif seguro == "n" or seguro == "no":
                 return
     else:
