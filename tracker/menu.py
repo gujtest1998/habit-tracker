@@ -11,7 +11,7 @@ def mostrar_menu():
         print("\n========= MENÚ DE OPCIONES =========")
         print("1. Registrar un nuevo hábito (100%)")
         print("2. Crear un temporizador (100%)")
-        print("3. Eliminar elementos")
+        print("3. Eliminar elementos (100%)")
         print("4. Modificar elementos")
         print("5. Mostrar estadísticas")
         print("6. Salir")
