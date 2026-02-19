@@ -47,6 +47,7 @@ def opcion_2():
 
 def opcion_3():
     lista = mostrar_registros()
+    print(lista)
     if lista:
         mostrar_menu_borrar()
     else:

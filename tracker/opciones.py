@@ -2,10 +2,10 @@ import csv
 from config import BASE_DIR
 
 from .colores import ROJO, VERDE, CIAN, INVERSION, RESET, print_color
-from .checks import comprobar_registro, comprobar_horas_temp, normalizar, validar_horas, validar_borrar_temporizador
+from .checks import comprobar_categoria, comprobar_horas_temp, normalizar, validar_horas, validar_borrar_temporizador
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, contar_habitos, mostrar_categorias,dev_temporizador_id,dev_lista_habitos_cat, dev_categoria_id, dev_habito_id, dev_lista_temporizadores_cat
-from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro, pedir_temporizador_borrar, pedir_habito_borrar
+from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro, pedir_categoria_borrar, pedir_temporizador_borrar, pedir_habito_borrar
 from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador, borrar_categoria
 
 from datetime import datetime
@@ -113,7 +113,6 @@ def opcion_borrar_tempo():
             if borrar == None:
                 return False
             else:
-                print(borrar)
                 seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar["nombre"]} con {borrar["horas"]} horas registradas del día {borrar["fecha"]}? s/n: {RESET}")
                 seguro = seguro.lower()
 
@@ -128,6 +127,7 @@ def opcion_borrar_tempo():
 def opcion_borrar_categoria():
     # muestra previamente todos los registros a eliminar
     lista = mostrar_categorias()
+
     if lista:
         print("\nEstos son las categorias ya registradas: \n")
         for i, item in enumerate(lista, start=1):
@@ -135,24 +135,9 @@ def opcion_borrar_categoria():
         print_color(volver,CIAN)
         while True:
             print_color("\nEliminar una categoría\n",INVERSION)
-            borrar = input("Introduce el nombre del elemento a borrar: ")
-            id_categoria = dev_categoria_id(borrar)
-            
-            lista_habitos = dev_lista_habitos_cat(id_categoria)
-            lista_temporizadores = dev_lista_temporizadores_cat(lista_habitos,id_categoria)
-
-            if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
+            borrar = pedir_categoria_borrar()
+            if borrar == None:
                 return False
-            
-            #temporizadores = contar_temporizador(borrar)
-            seguro = input(f"\n{ROJO}La categoria {borrar} tiene {len(lista_habitos)} hábitos asociados, con {len(lista_temporizadores)} registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
-            seguro = seguro.lower()
-            
-            if seguro == "s" or seguro == "si":
-                habito = borrar_categoria(borrar,id_categoria,lista_habitos,lista_temporizadores)
-                #registros = borrar_temporizadores(borrar)
-            elif seguro == "n" or seguro == "no":
-                return
     else:
         print_color("\nNo existe ninguna categoria a eliminar.",CIAN)
 

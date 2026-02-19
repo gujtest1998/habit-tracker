@@ -1,7 +1,7 @@
 from datetime import datetime
-from .checks import normalizar, validar_horas, comprobar_registro, validar_borrar_temporizador
-from .cargar import contar_habitos, contar_temporizador, dev_habito_id
-from .borrar import borrar_temporizadores, borrar_habito
+from .checks import normalizar, validar_horas, comprobar_registro, validar_borrar_temporizador, comprobar_categoria
+from .cargar import contar_habitos, contar_temporizador, mostrar_categorias, dev_habito_id, dev_categoria_id, dev_lista_habitos_cat, dev_lista_temporizadores_cat
+from .borrar import borrar_temporizadores, borrar_habito, borrar_categoria
 from .colores import ROJO, VERDE, CIAN, RESET,print_color
 
 def pedir_nombre_registro():
@@ -74,6 +74,33 @@ def pedir_habito_borrar():
                 return
             elif seguro == "n" or seguro == "no":
                 return
+def pedir_categoria_borrar():
+    while True:
+        lista = mostrar_categorias()
+        if lista:
+            borrar = input("Introduce el nombre del elemento a borrar: ")
+            if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
+                return None
+            if comprobar_categoria(normalizar(borrar)) is True:
+        
+                id_categoria = dev_categoria_id(borrar)
+                lista_habitos = dev_lista_habitos_cat(id_categoria)
+                lista_temporizadores = dev_lista_temporizadores_cat(lista_habitos,id_categoria)
+
+                seguro = input(f"{ROJO}La categoria {borrar} tiene {len(lista_habitos)} hábitos asociados, con {len(lista_temporizadores)} registros de tiempo. ¿Estás seguro de que quieres borrar esta categoría? s/n: {RESET}")
+                seguro = seguro.lower()
+                
+                if seguro == "s" or seguro == "si":
+                    habito = borrar_categoria(borrar,id_categoria,lista_habitos,lista_temporizadores)
+                    print_color(f"\nLa categoria {borrar} y todos sus elementos relacionados han sido borrados con éxito.",VERDE)
+                elif seguro == "n" or seguro == "no":
+                    return
+            else:
+                print_color("Opción no válida.",ROJO)
+                continue
+        else:
+            return None
+        
 def pedir_temporizador_borrar(lista):
     while True:
         borrar = input("Introduce el número del elemento a borrar: ")
