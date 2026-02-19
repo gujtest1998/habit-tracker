@@ -83,7 +83,7 @@ def seleccionar(opcion):
     if opcion in menu:
         return menu[opcion]()
     else:
-        print_color("\nOpción no válida.\n",ROJO)
+        print_color("\nOpción no válida.",ROJO)
         return True
 # las distintas opciones del menu borrar           
 def borrar_1():

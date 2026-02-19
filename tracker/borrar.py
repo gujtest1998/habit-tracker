@@ -51,7 +51,6 @@ def borrar_temporizador(borrar,seleccion):
     
 def borrar_temporizadores(id_habito,temporizador):
     ruta = BASE_DIR / "datos" / "temporizadores.csv"
-    print(id_habito)
     if not ruta.exists():
         return 0
     filas_restantes = []

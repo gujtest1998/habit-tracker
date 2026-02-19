@@ -52,9 +52,21 @@ def validar_horas(numero):
     try:
         numero = float(numero)
     except ValueError:
-        print_color("\nIntroduce un número de horas válido.",ROJO)
+        print_color("Introduce un número de horas válido.",ROJO)
         return False
     if float(numero) <= 0:
-        print_color("\nLas horas deben ser mayores que 0",ROJO)
+        print_color("Las horas deben ser mayores que 0",ROJO)
         return False
     return True
+
+def validar_borrar_temporizador(borrar,lista):
+    try:
+        borrar = int(borrar)
+        if borrar >= 1 and borrar <= len(lista):
+            return lista[borrar - 1]
+        else:
+            print_color(f"Opcion no valida",ROJO)
+            return None
+    except ValueError:
+        print_color("Debes introducir un número válido", ROJO)
+        return None
