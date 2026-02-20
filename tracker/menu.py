@@ -1,21 +1,29 @@
 from .cargar import mostrar_registros, mostrar_categorias, mostrar_temporizadores
 from .opciones import opcion_registro, opcion_temporizador, opcion_borrar, opcion_borrar_todo, opcion_borrar_tempo, opcion_borrar_categoria
 from .guardar import habito
+from .utilidades import limpiar_pantalla
 from .checks import normalizar
-from .colores import ROJO, VERDE, CIAN, RESET, print_color
+from .utilidades import ROJO, VERDE, CIAN, RESET, print_color
 
 import tkinter as tk
+
+# se guarda en una variable para luego simplemente mostrarlo en pantalla
+volver = f"\nEscribe 'volver' si quieres salir del programa."
+volver2 = f"\n..............................................."
+
 def mostrar_menu():
     # se repite en bucle hasta que se pulse Salir
     while True:
-        print("\n========= MENÚ DE OPCIONES =========")
+        limpiar_pantalla()
+        print_color("\n======== MENÚ HABIT TRACKER ========",VERDE)
         print("1. Registrar un nuevo hábito (100%)")
         print("2. Crear un temporizador (100%)")
         print("3. Eliminar elementos (100%)")
         print("4. Modificar elementos")
         print("5. Mostrar estadísticas")
         print("6. Salir")
-        print("====================================")
+        print_color("====================================",VERDE)
+        print_color(volver,CIAN)
 
         opcion = input("\nSelecciona una opción: ")
 
@@ -23,31 +31,36 @@ def mostrar_menu():
             break
 def mostrar_menu_borrar():
     while True:
-     # se repite en bucle hasta que se pulse Salir
-        print("\n========= MENÚ DE BORRADO =========")
-        print("1. Eliminar un hábito")
-        print("2. Eliminar un temporizador")
-        print("3. Eliminar una categoría")
-        print("4. Eliminar todos los elementos")
-        print("5. Salir")
-        print("====================================")
+        categorias = mostrar_categorias()
+        if categorias:
+        # se repite en bucle hasta que se pulse Salir
+            print_color("\n========= MENÚ DE BORRADO =========",VERDE)
+            print("1. Eliminar un hábito")
+            print("2. Eliminar un temporizador")
+            print("3. Eliminar una categoría")
+            print("4. Eliminar todos los elementos")
+            print("5. Salir")
+            print_color("====================================",VERDE)
 
-        opcion = input("\nSelecciona una opción: ")
-
+            opcion = input("\nSelecciona una opción: ")
+        else:
+            break
         if not borrar(opcion):
             break
 #opciones del menú principal  
 def opcion_1():
+    limpiar_pantalla()
     opcion_registro()
     return True
 
 def opcion_2():
+    limpiar_pantalla()
     opcion_temporizador()
     return True
 
 def opcion_3():
-    lista = mostrar_registros()
-    print(lista)
+    limpiar_pantalla()
+    lista = mostrar_categorias()
     if lista:
         mostrar_menu_borrar()
     else:
@@ -55,10 +68,12 @@ def opcion_3():
     return True
 
 def opcion_4():
+    limpiar_pantalla()
     print("En desarrollo")
     return True
 
 def opcion_5():
+    limpiar_pantalla()
     print("Prueba")
     print(mostrar_registros())
     return True
@@ -89,12 +104,15 @@ def seleccionar(opcion):
 # las distintas opciones del menu borrar           
 def borrar_1():
     opcion_borrar()
+    limpiar_pantalla()
     return True
 def borrar_2():
     opcion_borrar_tempo()
+    limpiar_pantalla()
     return True
 def borrar_3():
     opcion_borrar_categoria()
+    limpiar_pantalla()
     return True
 def borrar_4():
     opcion_borrar_todo()

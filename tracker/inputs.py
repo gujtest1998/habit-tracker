@@ -1,12 +1,12 @@
 from datetime import datetime
 from .checks import normalizar, validar_horas, comprobar_registro, validar_borrar_temporizador, comprobar_categoria
-from .cargar import contar_habitos, contar_temporizador, mostrar_categorias, dev_habito_id, dev_categoria_id, dev_lista_habitos_cat, dev_lista_temporizadores_cat
+from .cargar import contar_habitos, mostrar_registros, mostrar_temporizadores,contar_temporizador, mostrar_categorias, dev_habito_id, dev_categoria_id, dev_lista_habitos_cat, dev_lista_temporizadores_cat
 from .borrar import borrar_temporizadores, borrar_habito, borrar_categoria
-from .colores import ROJO, VERDE, CIAN, RESET,print_color
+from .utilidades import ROJO, VERDE, CIAN, RESET,print_color
 
 def pedir_nombre_registro():
      while True:
-        nombre = input("Nombre a registrar: ")
+        nombre = input("\nNombre a registrar: ")
      # devuelve el número de veces que el nombre está registrado
         comprobado = comprobar_registro(nombre)
 
@@ -27,7 +27,7 @@ def pedir_nombre_temp(lista_minus,lista):
         if nombre == "volver":
             return nombre
         else:
-            print_color(f"Por favor, introduce un temporizador de la lista.",ROJO)
+            print_color(f"Introduce un temporizador de la lista.",ROJO)
 
 def pedir_horas_temp():
     while True:
@@ -55,25 +55,29 @@ def pedir_fecha_temp():
             return fecha
 def pedir_habito_borrar():
     while True:
-        borrar = input("Introduce el nombre del elemento a borrar: ")
-        if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
-            return borrar
-        temporizadores = contar_temporizador(borrar)
-        habitos = contar_habitos(borrar)
-        if habitos == False:
-            print_color("Este hábito no existe.",ROJO)
-            continue
+        lista = mostrar_registros()
+        if lista:
+            borrar = input("Introduce el nombre del elemento a borrar: ")
+            if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
+                return None
+            temporizadores = contar_temporizador(borrar)
+            habitos = contar_habitos(borrar)
+            if habitos == False:
+                print_color("Este hábito no existe.",ROJO)
+                continue
+            else:
+                seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: {RESET}")
+                seguro = seguro.lower()
+                
+                if seguro == "s" or seguro == "si":
+                    registros = borrar_temporizadores(dev_habito_id(borrar),temporizadores)
+                    habito = borrar_habito(borrar,dev_habito_id(borrar))
+                    print_color(f"\nEl hábito {borrar} se ha eliminado con éxito.",VERDE)
+                    return True
+                elif seguro == "n" or seguro == "no":
+                    return
         else:
-            seguro = input(f"\n{ROJO}¿Estás seguro de que quieres borrar el hábito {borrar}?\nSe eliminarán {temporizadores} registros de horas asociados. s/n: {RESET}")
-            seguro = seguro.lower()
-            
-            if seguro == "s" or seguro == "si":
-                registros = borrar_temporizadores(dev_habito_id(borrar),temporizadores)
-                habito = borrar_habito(borrar,dev_habito_id(borrar))
-                print_color(f"\nEl hábito {borrar} se ha eliminado con éxito.",VERDE)
-                return
-            elif seguro == "n" or seguro == "no":
-                return
+            return None
 def pedir_categoria_borrar():
     while True:
         lista = mostrar_categorias()
@@ -93,6 +97,7 @@ def pedir_categoria_borrar():
                 if seguro == "s" or seguro == "si":
                     habito = borrar_categoria(borrar,id_categoria,lista_habitos,lista_temporizadores)
                     print_color(f"\nLa categoria {borrar} y todos sus elementos relacionados han sido borrados con éxito.",VERDE)
+                    return False
                 elif seguro == "n" or seguro == "no":
                     return
             else:
@@ -101,15 +106,20 @@ def pedir_categoria_borrar():
         else:
             return None
         
-def pedir_temporizador_borrar(lista):
+def pedir_temporizador_borrar():
     while True:
-        borrar = input("Introduce el número del elemento a borrar: ")
-        if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
-            return None
-        else:
-            validado = validar_borrar_temporizador(borrar,lista)
-
-            if validado is None:
-                continue
+        lista = mostrar_temporizadores()
+        if lista:
+        
+            borrar = input("Introduce el número del elemento a borrar: ")
+            if normalizar(borrar) == "volver" or normalizar(borrar) == "salir":
+                return None
             else:
-                return validado
+                validado = validar_borrar_temporizador(borrar,lista)
+
+                if validado is None:
+                    continue
+                else:
+                    return validado
+        else:
+            return None

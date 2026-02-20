@@ -1,115 +1,142 @@
 import csv
 from config import BASE_DIR
 
-from .colores import ROJO, VERDE, CIAN, INVERSION, RESET, print_color
-from .checks import comprobar_categoria, comprobar_horas_temp, normalizar, validar_horas, validar_borrar_temporizador
+from .utilidades import ROJO, VERDE, CIAN, INVERSION, RESET, print_color, limpiar_pantalla, preguntar_seguir
+from .checks import comprobar_categoria, comprobar_horas_temp,comprobar_horas_temp_24, normalizar, validar_horas, validar_borrar_temporizador
 from .guardar import registrar, registrar_categoria, habito
 from .cargar import mostrar_registros, mostrar_temporizadores, contar_temporizador, contar_habitos, mostrar_categorias,dev_temporizador_id,dev_lista_habitos_cat, dev_categoria_id, dev_habito_id, dev_lista_temporizadores_cat
 from .inputs import pedir_nombre_temp, pedir_horas_temp, pedir_fecha_temp, pedir_nombre_registro, pedir_categoria_borrar, pedir_temporizador_borrar, pedir_habito_borrar
 from .borrar import borrar_habito, borrar_temporizadores, borrar_csv, borrar_temporizador, borrar_categoria
 
 from datetime import datetime
-# se guarda en una variable para luego simplemente mostrarlo en pantalla
+volver = f"\nEscribe 'volver' si quieres salir al menú de opciones."
+volver2 = f"\n............................................................................"
 
-volver = f"\nConsejo: Escribe 'volver' si quieres salir al menú de opciones."
-print_color(volver, CIAN)
 
 def opcion_registro():
-    # extrae un listado de los hábitos registrados en el csv
-    lista = mostrar_registros()
-
-    if lista:
-        print("\nEstos son los hábitos ya registrados: \n")
-        
-        # recorre el listado, numerandolo con el nombre al lado
-        for i, item in enumerate(sorted(lista), start=1):
-            print(f"{i} - {item}")
-        print_color(volver, CIAN)
-
-    while True: #empieza el bucle para seguir creando habitos
-        print_color("\nRegistrar un nuevo hábito\n",INVERSION)
-        nombre = pedir_nombre_registro()
-        
-        # da la opción de introducir volver y salir en todas sus variables
-        if normalizar(nombre) == "volver" or normalizar(nombre) == "salir":
-            return False
-        
-        # si no está registrado, prosigue con el resto de inputs
-        categoria = input("Categoria: ")
 
         while True:
-            objetivo = input("Objetivo (horas): ")
+            lista = mostrar_registros()
+            print_color("\nRegistrar un nuevo hábito",INVERSION)
+            if lista:
+                print("\nHábitos registrados: \n")
+                # recorre el listado, numerandolo con el nombre al lado
+                for i, item in enumerate(sorted(lista), start=1):
+                    print(f"{i}. {item}")
+            print_color(volver, CIAN)
+
+            nombre = pedir_nombre_registro()
             
-            # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
-            if validar_horas(objetivo):
-                registrar_categoria(categoria)
-                id_categoria = dev_categoria_id(categoria)
-                registrar(nombre, id_categoria, objetivo)
-                print_color("\nSe ha añadido el hábito "+nombre+" en la categoría "+categoria+" con un objetivo de "+objetivo+" horas.",VERDE)
+            # da la opción de introducir volver y salir en todas sus variables
+            if normalizar(nombre) == "volver" or normalizar(nombre) == "salir":
+                return False
+                
+            # si no está registrado, prosigue con el resto de inputs
+            categoria = input("Categoria: ")
+
+            while True:
+                objetivo = input("Objetivo (horas): ")
+                
+                # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
+                if validar_horas(objetivo):
+                    registrar_categoria(categoria)
+                    id_categoria = dev_categoria_id(categoria)
+                    registrar(nombre, id_categoria, objetivo)
+                    print_color("\nSe ha añadido el hábito "+nombre+" en la categoría "+categoria+" con un objetivo de "+objetivo+" horas.",VERDE)
+                break
+            seguir = input("\n¿Quieres introducir un nuevo hábito? s/n: ")
+            lista = mostrar_registros()
+            if preguntar_seguir(seguir):
+                if not lista:
+                    break
+                continue
+            else:
                 break
 
 def opcion_temporizador():
 
-    lista = mostrar_registros() # devuelve el listado de habitos registrados
-    lista_minus = [item.lower() for item in lista]
-
-    if lista:
-        print("\nEstos son los hábitos ya registrados: \n")
+    while True: #empieza el bucle para seguir creando temporizadores
+        lista = mostrar_registros() # devuelve el listado de habitos registrados
+        lista_minus = [item.lower() for item in lista]
+        print_color("Añadir un nuevo temporizador",INVERSION)
+        print("\nHábitos registrados: \n")
 
         # recorre el listado, numerandolo con el nombre al lado
         for i, item in enumerate(sorted(lista), start=1):
-            print(f"{i} - {item}")
+            print(f"{i}. {item}")
         print_color(volver, CIAN)
         
-    while True: #empieza el bucle para seguir creando temporizadores
-        print_color("\nCrear un temporizador\n",INVERSION)
         nombre = pedir_nombre_temp(lista_minus,lista)
         if normalizar(nombre) == "volver" or normalizar(nombre) == "salir":
             return False
-        fecha = pedir_fecha_temp()  
         while True:
-            horas = pedir_horas_temp()
-            id_habito = dev_habito_id(nombre)
+            fecha = pedir_fecha_temp()  
             temporizadores = mostrar_temporizadores()
-            contador_horas = comprobar_horas_temp(temporizadores,horas,fecha)
+            contador_horas_24 = comprobar_horas_temp_24(temporizadores, fecha, nombre)
+            if contador_horas_24 >= 24:
+                print_color(f"Este temporizador ya tiene 24 horas registradas en este día.",ROJO)
+                break
+            while True:
+                horas = pedir_horas_temp()
+                id_habito = dev_habito_id(nombre)
+                
+                contador_horas = comprobar_horas_temp(temporizadores,horas,fecha,nombre)
 
-            if contador_horas > 24:
-                print_color("El total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
-                continue #si la actividad supera las 24 horas el mismo día, vuelve a pedir las horas
-            else:     
-                habito(id_habito,nombre,horas,fecha)
-                print_color(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}",VERDE)
-                break # una vez es correcto, sale del bucle de horas y dias y vuelve al bucle original
-        continue 
-        
+                if contador_horas > 24:
+                    print_color("El total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
+                    continue #si la actividad supera las 24 horas el mismo día, vuelve a pedir las horas
+                else:     
+                    habito(id_habito,nombre,horas,fecha)
+                    print_color(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}",VERDE)
+                    break # una vez es correcto, sale del bucle de horas y dias y vuelve al bucle original
+            break
+        seguir = input("\n¿Quieres introducir un nuevo hábito? s/n: ")
+        if preguntar_seguir(normalizar(seguir)):
+            continue
+        else:
+            break    
 
 def opcion_borrar():
     # muestra previamente todos los registros a eliminar
     lista = mostrar_registros()
+
     if lista:
-        print("\nEstos son los hábitos ya registrados: \n")
-        for i, item in enumerate(lista, start=1):
-            print(f"{i} - {item}")
-        print_color(volver, CIAN)
         while True:
+            lista = mostrar_registros()
+            print("\nEstos son los hábitos ya registrados: \n")
+            for i, item in enumerate(lista, start=1):
+                print(f"{i} - {item}")
+            print_color(volver, CIAN)
             print_color("\nEliminar un hábito\n",INVERSION)
             borrar = pedir_habito_borrar()
-            if borrar:
-                return False    
+            if borrar == None:
+                break
+            lista = mostrar_registros()
+            if lista:
+                seguir = input("\n¿Quieres eliminar otro temporizador? s/n: ")
+                if preguntar_seguir(normalizar(seguir)):
+                    continue
+                else:
+                    break    
+            else:
+                break
+
     else:
         print_color("\nNo existe ningún hábito a eliminar.",CIAN)
+
 def opcion_borrar_tempo():
     # muestra previamente todos los registros a eliminar
     lista = mostrar_temporizadores()
 
     if lista:
-        print("\nEstos son los temporizadores ya registrados: \n")
-        for i, item in enumerate(lista, start=1):
-            print(f"{i} - {item["nombre"]}: Horas '{item["horas"]}' Fecha '{item["fecha"]}'")
-        print_color(volver,CIAN)
         while True:
+            lista = mostrar_temporizadores()
+            print("\nEstos son los temporizadores ya registrados: \n")
+            for i, item in enumerate(lista, start=1):
+                print(f"{i} - {item["nombre"]}: Horas '{item["horas"]}' Fecha '{item["fecha"]}'")
+            print_color(volver,CIAN)
             print_color("\nEliminar un temporizador\n",INVERSION)
-            borrar = pedir_temporizador_borrar(lista)
+            borrar = pedir_temporizador_borrar()
             if borrar == None:
                 return False
             else:
@@ -118,9 +145,19 @@ def opcion_borrar_tempo():
 
                 if seguro == "s" or seguro == "si":
                     habito = borrar_temporizador(borrar["id"],borrar)
-                    return
+                    print_color(f"\nTemporizador eliminado con éxito.",VERDE)
                 elif seguro == "n" or seguro == "no":
-                    return
+                    continue
+            lista = mostrar_temporizadores()
+            if lista:
+                seguir = input("\n¿Quieres eliminar otro temporizador? s/n: ")
+                if preguntar_seguir(normalizar(seguir)):
+                    continue
+                else:
+                    break    
+            else:
+                break
+
     else:
         print_color("\nNo existe ningún temporizador a eliminar.",CIAN)
 
@@ -129,15 +166,25 @@ def opcion_borrar_categoria():
     lista = mostrar_categorias()
 
     if lista:
-        print("\nEstos son las categorias ya registradas: \n")
-        for i, item in enumerate(lista, start=1):
-            print(f"{i} - {item}")
-        print_color(volver,CIAN)
         while True:
+
+            print("\nEstos son las categorias ya registradas: \n")
+            for i, item in enumerate(lista, start=1):
+                print(f"{i} - {item}")
+            print_color(volver,CIAN)
             print_color("\nEliminar una categoría\n",INVERSION)
             borrar = pedir_categoria_borrar()
             if borrar == None:
                 return False
+            lista = mostrar_categorias()
+            if lista:
+                seguir = input("\n¿Quieres eliminar otra categoría? s/n: ")
+                if preguntar_seguir(normalizar(seguir)):
+                    continue
+                else:
+                    break    
+            else:
+                break
     else:
         print_color("\nNo existe ninguna categoria a eliminar.",CIAN)
 

@@ -1,7 +1,7 @@
 import csv
 from config import BASE_DIR
 from .checks import normalizar
-from .colores import ROJO, VERDE, CIAN, RESET, print_color
+from .utilidades import ROJO, VERDE, CIAN, RESET, print_color
 
 def borrar_habito(borrar,id_borrar):
     ruta = BASE_DIR / "datos" / "habitos.csv"

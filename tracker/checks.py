@@ -1,7 +1,7 @@
 import csv
 from config import BASE_DIR
 from datetime import datetime
-from .colores import ROJO, VERDE, CIAN, RESET, print_color
+from .utilidades import ROJO, VERDE, CIAN, RESET, print_color
 import unicodedata
 
 def normalizar(texto):
@@ -39,13 +39,20 @@ def comprobar_categoria(categoria):
 
         return any(fila["categoria"].lower() == categoria.lower() for fila in lector)
     
-def comprobar_horas_temp(temporizadores, horas, fecha):
+def comprobar_horas_temp(temporizadores, horas, fecha, nombre):
     contador_horas = 0.0
-
     for temporizador in temporizadores:
-        if datetime.strptime(temporizador["fecha"], "%Y-%m-%d").date() == fecha:
+        print(temporizador)
+        if datetime.strptime(temporizador["fecha"], "%Y-%m-%d").date() == fecha and temporizador["nombre"] == nombre:
             contador_horas = contador_horas + float(temporizador["horas"])
     contador_horas = contador_horas + float(horas)
+    return contador_horas
+
+def comprobar_horas_temp_24(temporizadores, fecha, nombre):
+    contador_horas = 0.0
+    for temporizador in temporizadores:
+        if datetime.strptime(temporizador["fecha"], "%Y-%m-%d").date() == fecha and temporizador["nombre"] == nombre:
+            contador_horas = contador_horas + float(temporizador["horas"])
     return contador_horas
 
 def validar_horas(numero):
