@@ -15,10 +15,20 @@ def mostrar_menu():
     # se repite en bucle hasta que se pulse Salir
     while True:
         limpiar_pantalla()
+        habitos = mostrar_registros()
+        temporizadores = mostrar_temporizadores()
+        categorias = mostrar_categorias()
+
         print_color("\n======== MENÚ HABIT TRACKER ========",VERDE)
         print("1. Registrar un nuevo hábito (100%)")
-        print("2. Crear un temporizador (100%)")
-        print("3. Eliminar elementos (100%)")
+        if not habitos:
+            print_color("2. Crear un temporizador (100%)",ROJO)
+        else:
+            print("2. Crear un temporizador (100%)")
+        if not habitos and not temporizadores and not categorias:
+            print_color("3. Eliminar elementos (100%)",ROJO)
+        else:
+            print("3. Eliminar elementos (100%)")
         print("4. Modificar elementos (Por desarrollar)")
         print("5. Mostrar estadísticas (Por desarrollar)")
         print("6. Salir")
@@ -33,10 +43,20 @@ def mostrar_menu_borrar():
     while True:
         categorias = mostrar_categorias()
         if categorias:
+            habitos = mostrar_registros()
+            temporizadores = mostrar_temporizadores()
+            categorias = mostrar_categorias()
         # se repite en bucle hasta que se pulse Salir
             print_color("\n========= MENÚ DE BORRADO =========",VERDE)
-            print("1. Eliminar un hábito")
-            print("2. Eliminar un temporizador")
+            if not habitos:
+                print_color("1. Eliminar un hábito",ROJO)
+            else:
+                print("1. Eliminar un hábito")
+            if not temporizadores:
+                print_color("2. Eliminar un temporizador",ROJO)
+            else:
+                print("2. Eliminar un temporizador")
+
             print("3. Eliminar una categoría")
             print("4. Eliminar todos los elementos")
             print("5. Salir")
@@ -55,8 +75,14 @@ def opcion_1():
 
 def opcion_2():
     limpiar_pantalla()
-    opcion_temporizador()
-    return True
+    lista = mostrar_registros()
+    if not lista:
+        return True
+    else:
+        opcion_temporizador()
+        return True
+    
+    
 
 def opcion_3():
     limpiar_pantalla()

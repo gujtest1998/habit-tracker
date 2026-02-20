@@ -23,5 +23,5 @@ def preguntar_seguir(seguir):
             return False
         else:
             print("Respuesta no válida.")
-            continue
+            break
         
