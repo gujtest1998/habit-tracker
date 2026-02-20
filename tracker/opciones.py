@@ -54,47 +54,48 @@ def opcion_registro():
                 break
 
 def opcion_temporizador():
-
+    lista = mostrar_temporizadores()
     while True: #empieza el bucle para seguir creando temporizadores
-        lista = mostrar_registros() # devuelve el listado de habitos registrados
-        lista_minus = [item.lower() for item in lista]
-        print_color("Añadir un nuevo temporizador",INVERSION)
-        print("\nHábitos registrados: \n")
+  
+            lista = mostrar_registros() # devuelve el listado de habitos registrados
+            lista_minus = [item.lower() for item in lista]
+            print_color("Añadir un nuevo temporizador",INVERSION)
+            print("\nHábitos registrados: \n")
 
-        # recorre el listado, numerandolo con el nombre al lado
-        for i, item in enumerate(sorted(lista), start=1):
-            print(f"{i}. {item}")
-        print_color(volver, CIAN)
-        
-        nombre = pedir_nombre_temp(lista_minus,lista)
-        if normalizar(nombre) == "volver" or normalizar(nombre) == "salir":
-            return False
-        while True:
-            fecha = pedir_fecha_temp()  
-            temporizadores = mostrar_temporizadores()
-            contador_horas_24 = comprobar_horas_temp_24(temporizadores, fecha, nombre)
-            if contador_horas_24 >= 24:
-                print_color(f"Este temporizador ya tiene 24 horas registradas en este día.",ROJO)
-                break
+            # recorre el listado, numerandolo con el nombre al lado
+            for i, item in enumerate(sorted(lista), start=1):
+                print(f"{i}. {item}")
+            print_color(volver, CIAN)
+            
+            nombre = pedir_nombre_temp(lista_minus,lista)
+            if normalizar(nombre) == "volver" or normalizar(nombre) == "salir":
+                return False
             while True:
-                horas = pedir_horas_temp()
-                id_habito = dev_habito_id(nombre)
-                
-                contador_horas = comprobar_horas_temp(temporizadores,horas,fecha,nombre)
+                fecha = pedir_fecha_temp()  
+                temporizadores = mostrar_temporizadores()
+                contador_horas_24 = comprobar_horas_temp_24(temporizadores, fecha, nombre)
+                if contador_horas_24 >= 24:
+                    print_color(f"Este temporizador ya tiene 24 horas registradas en este día.",ROJO)
+                    break
+                while True:
+                    horas = pedir_horas_temp()
+                    id_habito = dev_habito_id(nombre)
+                    
+                    contador_horas = comprobar_horas_temp(temporizadores,horas,fecha,nombre)
 
-                if contador_horas > 24:
-                    print_color("El total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
-                    continue #si la actividad supera las 24 horas el mismo día, vuelve a pedir las horas
-                else:     
-                    habito(id_habito,nombre,horas,fecha)
-                    print_color(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}",VERDE)
-                    break # una vez es correcto, sale del bucle de horas y dias y vuelve al bucle original
-            break
-        seguir = input("\n¿Quieres introducir un nuevo hábito? s/n: ")
-        if preguntar_seguir(normalizar(seguir)):
-            continue
-        else:
-            break    
+                    if contador_horas > 24:
+                        print_color("El total de horas registradas para esta actividad no puede ser mayor de 24",ROJO)
+                        continue #si la actividad supera las 24 horas el mismo día, vuelve a pedir las horas
+                    else:     
+                        habito(id_habito,nombre,horas,fecha)
+                        print_color(f"\nSe han añadido {horas} horas al temporizador {nombre} con fecha {fecha}",VERDE)
+                        break # una vez es correcto, sale del bucle de horas y dias y vuelve al bucle original
+                break
+            seguir = input("\n¿Quieres introducir un nuevo hábito? s/n: ")
+            if preguntar_seguir(normalizar(seguir)):
+                continue
+            else:
+                break    
 
 def opcion_borrar():
     # muestra previamente todos los registros a eliminar
