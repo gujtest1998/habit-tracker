@@ -64,7 +64,8 @@ def validar_horas(numero):
     if float(numero) <= 0:
         print_color("Las horas deben ser mayores que 0",ROJO)
         return False
-    return True
+    else:
+        return True
 
 def validar_borrar_temporizador(borrar,lista):
     try:

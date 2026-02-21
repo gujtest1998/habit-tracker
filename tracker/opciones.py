@@ -38,11 +38,14 @@ def opcion_registro():
                 objetivo = input("Objetivo (horas): ")
                 
                 # comprueba que las horas sean mayores que 0 y no contengan letras u otros caracteres
+                
                 if validar_horas(objetivo):
                     registrar_categoria(categoria)
                     id_categoria = dev_categoria_id(categoria)
                     registrar(nombre, id_categoria, objetivo)
                     print_color("\nSe ha añadido el hábito "+nombre+" en la categoría "+categoria+" con un objetivo de "+objetivo+" horas.",VERDE)
+                else:
+                    continue
                 break
             seguir = input("\n¿Quieres introducir un nuevo hábito? s/n: ")
             lista = mostrar_registros()
